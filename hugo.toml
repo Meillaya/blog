@@ -1,3 +1,24 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://yourdomain.com/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Nathan Agbomedarho'
+
+[params]
+  description = "I’m a recent Computer Science Graduate (BASc.) from McMaster University and I'm currently looking for full time positions or internship positions in Software Engineering."
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 2
+  [[menu.main]]
+    name = "Blog"
+    url = "/posts/"
+    weight = 3
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 4
