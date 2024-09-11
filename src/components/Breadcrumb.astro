@@ -1,0 +1,51 @@
+---
+const { currentPage } = Astro.props;
+
+const pathSegments = currentPage.split('/').filter((segment: string) => segment !== '');
+---
+
+{currentPage && currentPage !== 'home' && (
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    {pathSegments.map((segment: unknown, index: number) => {
+      const url = `/${pathSegments.slice(0, index + 1).join('/')}`;
+      const isLast = index === pathSegments.length - 1;
+      return (
+        <>
+          <span class="separator">/</span>
+          {isLast ? (
+            <span class="current-page">{segment}</span>
+          ) : (
+            <a href={url}>{segment}</a>
+          )}
+        </>
+      );
+    })}
+  </nav>
+)}
+
+<style>
+  .breadcrumb {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .breadcrumb a {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .separator {
+    margin: 0 0.5rem;
+    color: var(--text-color);
+  }
+
+  .current-page {
+    color: var(--secondary-color);
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+// src/pages/progress-reports.astro
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all progress reports and sort them by date (newest first)
+
+const allProgressReports = await getCollection('progress-reports');
+const sortedProgressReports = allProgressReports.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<Layout title="Progress Reports | Meillaya.dev" description="Track my learning progress in CS and ML" currentPage='progress reports'>
+
+  
+  <main class="container">
+
+    
+    <h1>Progress Reports</h1>
+    <p>Follow my journey as I learn CS and ML from scratch.</p>
+
+    <ul>
+      {sortedProgressReports.map((report) => (
+        <li>
+          <h2><a href={`/progress-reports/${report.slug}`}>{report.data.title}</a></h2>
+          <p>Published on: {report.data.publishDate.toLocaleDateString()}</p>
+          <p>Days: {report.data.days.join(', ')}</p>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  #progress-report-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  #progress-report-list li {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  #progress-report-list a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #progress-report-list h2 {
+    margin-top: 0;
+  }
+</style>
+

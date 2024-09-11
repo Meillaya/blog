@@ -1,0 +1,139 @@
+---
+// src/components/HomeContent.astro
+
+import { getCollection } from 'astro:content';
+
+// Fetch recent blog posts
+const allBlogPosts = await getCollection('blog');
+const recentBlogPosts = allBlogPosts
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+
+// Fetch recent progress reports
+const allProgressReports = await getCollection('progress-reports');
+const recentProgressReports = allProgressReports
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+
+
+---
+
+
+
+<main class="container home-page">
+  <div class="left-content">
+    <h1>Hey, I'm Nathan!</h1>
+    <p>
+      I’m a recent Computer Science Graduate and I'm currently looking for full time positions or internship positions in Software Engineering! <br><br>
+      Want to contact me?<span class="highlight-name"><a href="https://x.com/cassius0x4">DM me @cassius0x4 on X</a> </span>
+    </p>
+  </div>
+  <div class="projects">
+    <h2>Currently Working On: </h2>
+    <ul class="bullet-list">
+      <li>Compiler for C in Rust/C</li>
+      <li>Lox Interpreter written in Rust</li>
+      <li>This personal website!</li>
+  </ul>
+  </div>
+  <div class="right-content">
+    <h2>Subsume: Discipline</h2>
+    <p>
+      I've come to realize that I didn't capitalize on all the oppurtunities I had as a student.<br><br>
+      I didn't really learn anything, at least not the things that mattered.<br><br>
+      So I need to go back to the fundamentals.<br><br>
+      This is where I'll be documenting all my progress in diving into the fundamentals of computer science, especially relating to my progress in constructing compilers, interpreters and perhaps
+      later down the line kernels and even a tiny Operating System. <br><br>
+      <span class="highlight-name"><a href="/blog/the beginning">Read the post</a></span>
+    </p>
+  </div>
+  <section id="recent-posts">
+    <h2>Recent Posts</h2>
+    <ul>
+      {recentBlogPosts.map((post) => (
+        <li class="post-card">
+          <h3 class="post-title">
+            <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+          </h3>
+          <div class="post-date">{post.data.publishDate.toLocaleDateString()}</div>
+          <div class="post-description">{post.data.description}</div>
+        </li>
+      ))}
+    </ul>
+    <p class="see-all"><a href="/blog">See all posts</a></p>
+  </section>
+
+  <section id="recent-progress-reports">
+    <h2>Recent Progress Reports</h2>
+    <ul>
+      {recentProgressReports.map((report) => (
+        <li class="post-card">
+          <h3 class="post-title">
+            <a href={`/progress-reports/${report.slug}`}>Progress Report: {report.data.title}</a>
+          </h3>
+          <div class="post-date">{report.data.publishDate.toLocaleDateString()}</div>
+          <div class="post-description">Days: {report.data.days.join(', ')}</div>
+        </li>
+      ))}
+    </ul>
+    <p class="see-all"><a href="/progress-reports">See all progress reports</a></p>
+  </section>
+</main>
+
+<style>
+
+.highlight-name {
+    color: rgb(134, 7, 219); /* This is the accent color you've been using */
+  }
+  
+  .highlight-secondary {
+    color: rgb(3, 199, 101); /* This is an example green color */
+  }
+  
+  /* You can add more custom color classes as needed */
+
+
+  .container.home-page {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .left-content {
+      text-align: left; /* This will left-justify the text content */
+    /* If you're using flexbox or grid for alignment, you might also need: */
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .right-content {
+    text-align: right; /* This will left-justify the text content */
+    /* If you're using flexbox or grid for alignment, you might also need: */
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 768px) {
+    .container.home-page {
+      flex-direction: column;
+    }
+
+    .right-content {
+      /* Ensure left alignment on smaller screens if needed */
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+
+  h1, h2, p, ul {
+    font-family: 'IBM Plex Mono', sans-serif;
+  }
+
+  section {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  h1 {
+    font-weight: normal;
+  }
+</style>

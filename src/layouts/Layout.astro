@@ -1,0 +1,116 @@
+---
+// src/layouts/Layout.astro
+
+// At the top of your Layout.astro file
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+
+export interface Props {
+  title: string;
+  description: string;
+  theme?: 'light' | 'dark';
+  currentPage: string;
+}
+
+const { title, description, currentPage = "Default description" } = Astro.props;
+
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    
+    <!-- Favicon and Device Icons -->
+    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicons/android-chrome-512x512.png">
+    <link rel="manifest" href="/favicons/site.webmanifest"> -->
+    
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lelouch.dev/">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <!-- <meta property="og:image" content="/Lelouchdaily.png"> -->
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="lelouch.dev">
+    <meta property="twitter:url" content="https://lelouch.dev">
+    <meta name="twitter:creator" content="@lelouchdaily">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <!-- <meta name="twitter:image" content="/Lelouchdaily.png"> -->
+    
+    <!-- Preload Font -->
+    <link rel="preload" href="/fonts/woff2/IBMPlexMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Inline critical CSS -->
+    <style is:inline>
+      :root {
+        --color-bg-dark: #171717;
+        --color-bg-light: #f8f8f8;
+        --color-text-dark: #000000;
+        --color-text-light: #FBFBFB;
+      }
+
+      .no-js {
+        background-color: var(--color-bg-dark);
+        color: var(--color-text-light);
+      }
+
+      .no-js .ascii-art-light {
+        display: none;
+      }
+    </style>
+    
+    <!-- Theme Toggle Script -->
+    <script>
+      import { initThemeToggle } from '../scripts/themeToggle.js';
+      initThemeToggle();
+    </script>
+    
+    <!-- Set initial theme -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme-preference') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.add(`bg-${theme}`);
+      })();
+    </script>
+    
+    <!-- Umami Analytics -->
+    <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id=""></script> -->
+    
+    <!-- Goat Counter Analytics -->
+    <!-- <script data-goatcounter="https://lelouch.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script> -->
+    
+    <!-- RSS Feeds -->
+    <link rel="alternate" type="application/rss+xml" title="Lelouch.dev | Blog Posts (Titles & Summaries)" href="/blog/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="Lelouch.dev | Blog Posts (Text included)" href="/blog/fullrss.xml">
+    <link rel="alternate" type="application/rss+xml" title="Lelouch.dev | Progress Reports (Titles & Summaries)" href="/progress-reports/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="Lelouch.dev | Progress Reports (Text included)" href="/progress-reports/fullrss.xml">
+  </head>
+  <body>
+    <div class = "container">
+    <Header />
+    {currentPage !== 'home' && <Breadcrumb currentPage={currentPage} />}
+    <main>
+    <slot />
+    <script>
+
+    </script>
+    </main>
+    <Footer />
+    </div>
+  </body>
+</html>
