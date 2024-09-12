@@ -1,7 +1,7 @@
 ---
 title: "The Beginning"
 description: "What it Means to Be Disciplined"
-publishDate: 2024-09-01
+publishDate: 2024-09-02
 ---
 
 # What it Means to Be Disciplined

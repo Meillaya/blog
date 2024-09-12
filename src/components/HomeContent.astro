@@ -22,7 +22,7 @@ const recentProgressReports = allProgressReports
 
 <main class="container home-page">
   <div class="left-content">
-    <h1>Hey, I'm Nathan!</h1>
+    <h1>Hello: Friend</h1>
     <p>
       I’m a recent Computer Science Graduate and I'm currently looking for full time positions or internship positions in Software Engineering! <br><br>
       Want to contact me?<span class="highlight-name"><a href="https://x.com/cassius0x4">DM me @cassius0x4 on X</a> </span>
@@ -37,7 +37,7 @@ const recentProgressReports = allProgressReports
   </ul>
   </div>
   <div class="right-content">
-    <h2>Subsume: Discipline</h2>
+    <h2>Who are you?</h2>
     <p>
       I've come to realize that I didn't capitalize on all the oppurtunities I had as a student.<br><br>
       I didn't really learn anything, at least not the things that mattered.<br><br>
@@ -53,14 +53,14 @@ const recentProgressReports = allProgressReports
       {recentBlogPosts.map((post) => (
         <li class="post-card">
           <h3 class="post-title">
-            <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+            <span class="highlight-name"><a href={`/blog/${post.slug}`}>{post.data.title}</a></span>
           </h3>
           <div class="post-date">{post.data.publishDate.toLocaleDateString()}</div>
           <div class="post-description">{post.data.description}</div>
         </li>
       ))}
     </ul>
-    <p class="see-all"><a href="/blog">See all posts</a></p>
+    <p class="see-all"><span class="highlight-name"><a href="/blog">See all posts</a></span></p>
   </section>
 
   <section id="recent-progress-reports">
@@ -69,28 +69,28 @@ const recentProgressReports = allProgressReports
       {recentProgressReports.map((report) => (
         <li class="post-card">
           <h3 class="post-title">
-            <a href={`/progress-reports/${report.slug}`}>Progress Report: {report.data.title}</a>
+            <span class="highlight-name"><a href={`/progress-reports/${report.slug}`}>{report.data.title}</a></span>
           </h3>
           <div class="post-date">{report.data.publishDate.toLocaleDateString()}</div>
           <div class="post-description">Days: {report.data.days.join(', ')}</div>
         </li>
       ))}
     </ul>
-    <p class="see-all"><a href="/progress-reports">See all progress reports</a></p>
+    <p class="see-all"><span class="highlight-name"><a href="/progress-reports">See all progress reports</a></span></p>
   </section>
 </main>
 
 <style>
 
-.highlight-name {
-    color: rgb(134, 7, 219); /* This is the accent color you've been using */
+/* .highlight-name {
+    color: rgb(134, 7, 219); 
   }
   
   .highlight-secondary {
-    color: rgb(3, 199, 101); /* This is an example green color */
-  }
+    color: rgb(3, 199, 101); 
+  } */
   
-  /* You can add more custom color classes as needed */
+
 
 
   .container.home-page {
@@ -127,10 +127,6 @@ const recentProgressReports = allProgressReports
 
   h1, h2, p, ul {
     font-family: 'IBM Plex Mono', sans-serif;
-  }
-
-  section {
-    font-family: Arial, Helvetica, sans-serif;
   }
   
   h1 {
