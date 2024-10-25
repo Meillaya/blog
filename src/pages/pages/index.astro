@@ -1,0 +1,166 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="About | Meillaya.dev" description="About me and my journey in software development" currentPage='about'>
+  <main class="about-page">
+    <div class="page-header">
+      <h1>About Me</h1>
+    </div>
+
+    <div class="about-content">
+      <section class="about-section">
+        <h2>Background</h2>
+        <p>
+          I'm a recent Computer Science graduate with a passion for understanding the fundamentals of computing. After graduation, 
+          I realized that I wanted to dive deeper into the core concepts that make computers work.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>Current Focus</h2>
+        <p>
+          I'm currently focused on:
+        </p>
+        <ul class="focus-list">
+          <li>Building a C compiler in Rust to understand systems programming</li>
+          <li>Implementing a Lox interpreter to grasp programming language design</li>
+          <li>Documenting my learning journey through blog posts and progress reports</li>
+        </ul>
+      </section>
+
+      <section class="about-section">
+        <h2>Skills & Interests</h2>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>Languages</h3>
+            <ul class="tag-list">
+              <li class="tag">Rust</li>
+              <li class="tag">C</li>
+              <li class="tag">Python</li>
+              <li class="tag">JavaScript</li>
+            </ul>
+          </div>
+          <div class="skill-category">
+            <h3>Areas of Interest</h3>
+            <ul class="tag-list">
+              <li class="tag">Systems Programming</li>
+              <li class="tag">Compiler Design</li>
+              <li class="tag">Language Implementation</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <h2>Connect</h2>
+        <p>
+          Feel free to reach out to me on <a href="https://twitter.com/cassius0x4">Twitter</a> or check out my projects on 
+          <a href="https://github.com/Meillaya">GitHub</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<style>
+.about-page {
+  padding: 2rem 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-section {
+  margin-bottom: 3rem;
+}
+
+.about-section h2 {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.about-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 3rem;
+  height: 3px;
+  background-color: var(--accent-color-light);
+}
+
+.bg-dark .about-section h2::after {
+  background-color: var(--accent-color-dark);
+}
+
+.focus-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.focus-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.focus-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-color-light);
+}
+
+.bg-dark .focus-list li::before {
+  color: var(--accent-color-dark);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.skill-category h3 {
+  margin-bottom: 1rem;
+}
+
+.tag-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: var(--accent-color-light);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.bg-dark .tag {
+  background-color: var(--accent-color-dark);
+}
+
+@media (max-width: 768px) {
+  .about-page {
+    padding: 1rem 0;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+</style>
