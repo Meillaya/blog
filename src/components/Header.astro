@@ -5,25 +5,36 @@ const navItems = [
   { path: '/progress-reports', label: 'Progress' },
   { path: '/pages', label: 'About' },
 ];
+
+const currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header">
-  <div class="container">
+  <div class="header-container">
     <nav class="nav-wrapper">
       <ul class="nav-list">
         {navItems.map(({ path, label }) => (
           <li>
-            <a href={path} class={Astro.url.pathname === path ? 'active' : ''}>
+            <a 
+              href={path} 
+              class:list={[
+                'nav-link',
+                { active: currentPath === path || (path !== '/' && currentPath.startsWith(path)) }
+              ]}
+              aria-current={currentPath === path ? 'page' : undefined}
+            >
               {label}
             </a>
           </li>
         ))}
-        <li>
-          <button id="theme-toggle" aria-label="Toggle theme">
-            <span class="theme-toggle-icon">🌓</span>
-          </button>
-        </li>
       </ul>
+      <button 
+        id="theme-toggle" 
+        aria-label="Toggle theme"
+        class="theme-toggle"
+      >
+        <span class="theme-toggle-icon" aria-hidden="true">🌓</span>
+      </button>
     </nav>
   </div>
 </header>
@@ -31,12 +42,20 @@ const navItems = [
 <style>
 .site-header {
   padding: 1.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  transition: background-color var(--transition-speed), border-color var(--transition-speed);
+}
+
+.header-container {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .nav-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -48,46 +67,66 @@ const navItems = [
   margin: 0;
 }
 
-.nav-list a {
-  color: inherit;
+.nav-link {
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 0;
   position: relative;
+  transition: color var(--transition-speed);
 }
 
-.nav-list a::after {
+.nav-link::after {
   content: '';
   position: absolute;
   width: 0;
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: var(--accent-color-light);
-  transition: width 0.3s ease;
+  background-color: var(--accent-color);
+  transition: width var(--transition-speed);
 }
 
-.bg-dark .nav-list a::after {
-  background-color: var(--accent-color-dark);
-}
-
-.nav-list a:hover::after,
-.nav-list a.active::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 
-#theme-toggle {
+.theme-toggle {
   background: none;
   border: none;
   padding: 0.5rem;
   cursor: pointer;
   font-size: 1.2rem;
-  color: inherit;
+  color: var(--text-color);
+  transition: transform var(--transition-speed);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
+  .header-container {
+    padding: 0 1rem;
+  }
+
   .nav-list {
     gap: 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-list {
     flex-wrap: wrap;
     justify-content: center;
   }
