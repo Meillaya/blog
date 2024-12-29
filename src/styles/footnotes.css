@@ -1,0 +1,47 @@
+.footnotes-container {
+  position: fixed;
+  top: 4rem;
+  right: 2rem;
+  width: 20rem;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: var(--spacing-md);
+}
+
+.footnote {
+  background: #f8f8f8;
+  border-radius: 4px;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.footnote.active {
+  opacity: 1;
+}
+
+.footnote-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+.footnote-code {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: var(--spacing-sm);
+  background: #f1f1f1;
+  border-radius: 2px;
+  overflow-x: auto;
+}
+
+@media (max-width: 1200px) {
+  .footnotes-container {
+    position: static;
+    width: 100%;
+    max-width: 680px;
+    margin: var(--spacing-xl) auto 0;
+  }
+}

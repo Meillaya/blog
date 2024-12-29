@@ -1,20 +1,31 @@
 {
-  "name": "",
+  "name": "@example/basics",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.3",
+    "astro": "^4.15.3",
+    "@astrojs/react": "^3.0.10",
     "@astrojs/mdx": "^2.1.1",
-    "@astrojs/rss": "^4.0.5",
-    "@astrojs/sitemap": "^3.1.1",
-    "astro": "^4.5.4",
-    "typescript": "^5.3.3"
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "katex": "^0.16.9",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^6.0.0",
+    "unified": "^11.0.4",
+    "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "shiki": "^0.14.7",
+    "intersection-observer": "^0.12.2"
   }
 }

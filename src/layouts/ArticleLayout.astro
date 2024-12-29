@@ -1,0 +1,45 @@
+---
+import Layout from './Layout.astro';
+import { FootnoteContainer } from '../components/Footnotes/FootnoteContainer';
+import '../styles/base.css';
+import '../styles/typography.css';
+import '../styles/article.css';
+import '../styles/katex.css';
+
+interface Props {
+  title: string;
+  date: string;
+  author?: string;
+  description?: string;
+  footnotes: Array<{
+    id: string;
+    content: any;
+    type: 'text' | 'image' | 'code' | 'math';
+  }>;
+}
+
+const { title, date, author, description, footnotes } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <article class="article">
+    <header>
+      <h1>{title}</h1>
+      <div class="article-meta">
+        <time datetime={date}>{new Date(date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}</time>
+        {author && <span> · {author}</span>}
+      </div>
+    </header>
+    
+    <div class="article-content">
+      <slot />
+    </div>
+  </article>
+  
+  <FootnoteContainer client:load footnotes={footnotes} />
+  
+</Layout>

@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+---
+
+<Layout title="About - Your Technical Blog">
+  <h1>About</h1>
+  
+  <div class="about-content">
+    <p>
+      I'm a software engineer focused on high-performance computing and systems optimization.
+      This blog is where I share my experiences and insights about software engineering,
+      particularly in areas of performance optimization and low-level systems programming.
+    </p>
+
+    <p>
+      My work primarily involves:
+    </p>
+
+    <ul>
+      <li>Performance optimization</li>
+      <li>Systems programming</li>
+      <li>GPU computing</li>
+      <li>Machine learning infrastructure</li>
+    </ul>
+
+    <p>
+      Feel free to reach out to me on <a href="https://github.com/Meillaya">GitHub</a>
+      or <a href="https://twitter.com/meillaya">Twitter</a>.
+    </p>
+  </div>
+</Layout>
+
+<style>
+  .about-content {
+    max-width: 650px;
+  }
+
+  ul {
+    margin: 1rem 0 1.5rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+</style>

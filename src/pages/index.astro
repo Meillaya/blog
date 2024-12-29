@@ -1,13 +1,46 @@
 ---
-// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import HomeContent from '../components/HomeContent.astro';
-import Footer from '../components/Footer.astro';
+import ArticlePreview from '../components/ArticlePreview.astro';
+
+// Fetch content from the 'src/content/blog' directory
+const blogPosts = await Astro.glob('../content/blog/*.md');
+
+// Sort the posts by date (optional, but often desired)
+blogPosts.sort((a, b) => new Date(b.frontmatter.publishDate).getTime() - new Date(a.frontmatter.publishDate).getTime());
 ---
 
-<Layout title="Meillaya.dev | Personal Blog" description="Learning CS fundamentals from scratch, one day at a time." currentPage="home">
+<Layout title="meillaya">
+  <section class="intro">
+    <p>
+      This is the website of Nathan Agbomedarho. I work on performance optimization and systems programming, and maybe some full-stack dev work from time to time.
+      {" "}<a href="/about">More about me</a>.
+    </p>
+  </section>
 
-  <HomeContent />
+  <section class="articles">
+    {blogPosts.map(post => (
+      <ArticlePreview
+        title={post.frontmatter.title}
+        description={post.frontmatter.description}
+        date={post.frontmatter.date}
+        slug={post.file.split('/').pop().replace('.md', '')}
+      />
+    ))}
 
+    
+  </section>
+
+  
 </Layout>
+
+<style>
+  .intro {
+    margin: 2rem 0 4rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+
+  .articles {
+    margin-top: 2rem;
+  }
+</style>
