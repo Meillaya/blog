@@ -1,0 +1,86 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const musingsPosts = await getCollection('musings');
+
+musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+---
+
+<Layout title="Musings & Fun Stuff">
+    <h1>Musings & Fun Stuff</h1>
+    <ul class="musings-list">
+        {musingsPosts.map((post) => (
+        <li class="musings-item">
+          <a href={`/musings/${post.slug}`} class="musings-link">
+            <div class="musings-content">
+              <h2>{post.data.title}</h2>
+             <p>{post.data.description}</p>
+            </div>
+             <div class="musings-preview">
+                 {post.data.previewImage && <img src={post.data.previewImage} alt="preview"/>}
+                 {post.data.previewVideo && <video src={post.data.previewVideo} alt="preview" loop autoplay muted></video>}
+            </div>
+         </a>
+       </li>
+        ))}
+    </ul>
+</Layout>
+
+<style>
+  .musings-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .musings-item {
+    margin-bottom: 1.5rem;
+    position: relative; /* Needed for absolute positioning of preview */
+  }
+  
+  .musings-link {
+     display: block;
+     text-decoration: none;
+     color: inherit;
+     border: 1px solid var(--color-border);
+     border-radius: 8px;
+     padding: 1rem;
+     position:relative;
+     transition: border-color 0.3s ease;
+  }
+
+   .musings-link:hover {
+     border-color: var(--color-primary)
+   }
+  .musings-content {
+     z-index: 2;
+     position: relative;
+  }
+
+ .musings-preview {
+   display: none;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+     height: 100%;
+   border-radius: 8px;
+     overflow: hidden;
+     z-index: 1;
+ }
+    .musings-link:hover .musings-preview {
+         display: block;
+    }
+
+    .musings-preview img,
+     .musings-preview video {
+         width: 100%;
+         height: 100%;
+          object-fit: cover;
+        opacity: 0.8;
+         transition: opacity 0.3s ease;
+
+     }
+
+</style>

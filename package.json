@@ -11,21 +11,28 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.15.3",
-    "@astrojs/react": "^3.0.10",
-    "@astrojs/mdx": "^2.1.1",
+    "@astrojs/mdx": "^4.0.3",
+    "@astrojs/react": "^4.1.2",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
+    "astro": "5.1.1",
+    "install": "^0.13.0",
+    "intersection-observer": "^0.12.2",
+    "katex": "^0.16.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "katex": "^0.16.9",
     "rehype-katex": "^7.0.0",
-    "remark-math": "^6.0.0",
-    "unified": "^11.0.4",
+    "rehype-shiki": "^0.0.9",
     "rehype-stringify": "^10.0.0",
+    "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
-    "shiki": "^0.14.7",
-    "intersection-observer": "^0.12.2"
+    "shiki": "^1.24.4",
+    "shiki-languages": "^0.2.7",
+    "shiki-themes": "^0.2.7",
+    "unified": "^11.0.4"
+  },
+  "devDependencies": {
+    "@shikijs/rehype": "^1.24.4"
   }
 }

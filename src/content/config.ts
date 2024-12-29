@@ -22,9 +22,20 @@ const progressReportsCollection = defineCollection({
   })
 });
 
+const musingsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    publishDate: z.date(),
+    description: z.string(),
+    previewImage: z.string().optional(),
+    previewVideo: z.string().optional()
+  }),
+});
 
 
 export const collections = {
   'blog': blogCollection,
   'progress-reports': progressReportsCollection,
+  'musings': musingsCollection
 };

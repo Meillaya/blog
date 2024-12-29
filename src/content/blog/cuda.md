@@ -4,15 +4,15 @@ description: "In this post, I’ll iteratively optimize an implementation of mat
 publishDate: 2024-09-02
 ---
 
-In this post, I’ll iteratively optimize an implementation of matrix multiplication written in CUDA. My goal is not to build a cuBLAS replacement, but to deeply understand the most important performance characteristics of the GPUs that are used for modern deep learning. This includes coalescing global memory accesses, shared memory caching and occupancy optimizations, among others.
+In this post, I’ll iteratively optimize an implementation of matrix multiplication written in CUDA. My goal is not to build a cuBLAS replacement, but to deeply understand the most important performance characteristics of the GPUs that are used for modern deep learning. This includes coalescing global memory accesses, shared memory caching and occupancy optimizations, among others.[^1] [^2]
 
-[^1]You can download the code for all kernels from [Github](https://github.com/siboehm/SGEMM_CUDA). Also checkout [wangzyon’s repo](https://github.com/wangzyon/NVIDIA_SGEMM_PRACTICE) from which I copied the benchmarking setup. 
+[^1]: You can download the code for all kernels from [Github](https://github.com/siboehm/SGEMM_CUDA). Also checkout [wangzyon’s repo](https://github.com/wangzyon/NVIDIA_SGEMM_PRACTICE) from which I copied the benchmarking setup.
 
-[^2]This post is less polished than my normal uploads, and includes many more sidenotes. I used it as notepad for ideas and scribbles while writing the kernels. That’s why I called it a worklog :)
+[^2]:This post is less polished than my normal uploads, and includes many more sidenotes. I used it as notepad for ideas and scribbles while writing the kernels. That’s why I called it a worklog :)
 
-Matrix multiplication on GPUs may currently be the most important algorithm that exists, considering it makes up almost all the FLOPs during the training and inference of large deep-learning models. So how much work is it to write a performant CUDA SGEMM
+Matrix multiplication on GPUs may currently be the most important algorithm that exists, considering it makes up almost all the FLOPs during the training and inference of large deep-learning models. So how much work is it to write a performant CUDA SGEMM[^3]
 
-[^3]SGEMM performs `C=αAB+βC` at single (=32b) precision.
+[^3]: SGEMM performs `C=αAB+βC` at single (=32b) precision.
 
  From scratch? I’ll start with a naive kernel and step-by-step apply optimizations until we get within 95% (on a good day) of the performance of cuBLAS (NVIDIA’s official matrix library):cuBLAS at FP32 that is. In my setting, doing the matmul using TF32 or BF16 precision allows cuBLAS to use the tensor cores, which increases FLOPS by 2.5x or 3.5x. I may look into tensor cores / warp matrix functions in a future post.
 
