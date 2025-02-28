@@ -1,55 +1,304 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ArticlePreview from '../components/ArticlePreview.astro';
 import { getCollection } from 'astro:content';
-// Fetch content from the 'src/content/blog' directory
-const blogPosts = await Astro.glob('../content/blog/*.md');
-// const allBlogPosts = await getCollection('blog');
-// const recentBlogPosts = allBlogPosts
-//   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-//   .slice(0, 3);
 
-
-blogPosts.sort((a, b) => new Date(b.frontmatter.publishDate).getTime() - new Date(a.frontmatter.publishDate).getTime());
-const recentPosts = blogPosts.slice(0, 3);
+// Use getCollection for consistency with other pages
+const blogPosts = await getCollection('blog');
+const recentPosts = blogPosts
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
 ---
 
 <Layout title="meillaya">
-  <section class="intro">
-    <p>
-      This is the website of Nathan Agbomedarho. I work on performance optimization and systems programming, and maybe some full-stack dev work from time to time.
-      {" "}<a href="/about">More about me</a>.
-    </p>
-  </section>
+  <div class="container">
+    <!-- <header class="page-header">
+      <h1 class="page-title">Welcome</h1>
+      <p class="page-description">Personal blog & thoughts collection</p>
+    </header> -->
 
-  <section class="articles">
-    {recentPosts.map(post => (
-      <ArticlePreview
-        title={post.frontmatter.title}
-        description={post.frontmatter.description}
-        date={post.frontmatter.date}
-        slug={post.file.split('/').pop().replace('.md', '')}
-      />
-    ))}
-  {blogPosts.length > 3 && (
-    <p>
-      <a href="/archive">View all posts →</a>
-    </p>
-  )}
-    
-  </section>
+    <section class="intro">
+      <p>
+        This is the website of Nathan Agbomedarho. I work on performance optimization and systems programming, and maybe some full-stack dev work from time to time.
+        {" "}<a href="/about" class="about-link">More about me</a>.
+      </p>
+    </section>
 
-  
+    <section class="featured-section">
+      <h2 class="section-title">Recent Articles</h2>
+      
+      <ul class="articles-list">
+        {recentPosts.map((post) => (
+          <li class="article-item">
+            <a href={`/blog/${post.slug}`} class="article-link">
+              <div class="article-content">
+                <h3 class="article-title">{post.data.title}</h3>
+                <time class="article-date" datetime={post.data.publishDate.toISOString()}>
+                  {new Date(post.data.publishDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <p class="article-description">{post.data.description}</p>
+                <span class="read-more">Continue reading <span class="arrow">→</span></span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      
+      {blogPosts.length > 3 && (
+        <div class="view-all">
+          <a href="/archive" class="view-all-link">View all posts <span class="arrow">→</span></a>
+        </div>
+      )}
+    </section>
+  </div>
 </Layout>
 
 <style>
-  .intro {
-    margin: 2rem 0 4rem;
-    font-size: 1.2rem;
-    line-height: 1.5;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  .articles {
+  .page-header {
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  .page-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--color-primary, #6a2fb8);
+    border-radius: 3px;
+  }
+
+  .page-title {
+    margin-bottom: 0.5rem;
+    font-size: 2.75rem;
+    color: var(--color-heading, #333);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .page-description {
+    font-size: 1.2rem;
+    color: var(--color-text-light, #666);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .intro {
+    margin: 2rem 0 4rem;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: var(--color-text, #444);
+    padding: 2rem;
+    background: var(--color-card-bg, #FFF1E7);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .about-link {
+    color: var(--color-primary, #6a2fb8);
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .about-link:hover {
+    color: var(--color-primary-dark, #5a1fa8);
+  }
+
+  .about-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-primary, #6a2fb8);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+
+  .about-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-heading, #333);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--color-primary, #6a2fb8);
+    border-radius: 3px;
+  }
+
+  .featured-section {
+    margin-bottom: 4rem;
+  }
+
+  .articles-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .article-item {
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  
+  .article-link {
+    display: flex;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-card-bg, #FFF1E7);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    height: 100%;
+  }
+
+  .article-link:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .article-content {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  .article-title {
+    margin: 0 0 0.75rem;
+    font-size: 1.6rem;
+    color: var(--color-heading, #333);
+    font-weight: 700;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .article-link:hover .article-title {
+    color: var(--color-primary, #6a2fb8);
+  }
+
+  .article-date {
+    font-size: 0.9rem;
+    color: var(--color-text-light, #666);
+    margin-bottom: 1.25rem;
+    display: block;
+    font-weight: 500;
+  }
+
+  .article-description {
+    margin: 0 0 1.75rem;
+    line-height: 1.7;
+    color: var(--color-text, #444);
+    flex-grow: 1;
+    font-size: 1.05rem;
+  }
+
+  .read-more {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary, #6a2fb8);
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .arrow {
+    display: inline-block;
+    margin-left: 0.25rem;
+    transition: transform 0.3s ease;
+  }
+
+  .article-link:hover .read-more .arrow {
+    transform: translateX(6px);
+  }
+
+  .view-all {
+    text-align: center;
     margin-top: 2rem;
+  }
+
+  .view-all-link {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--color-primary, #6a2fb8);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .view-all-link:hover {
+    background: var(--color-primary-dark, #5a1fa8);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(106, 47, 184, 0.15);
+  }
+
+  .view-all-link .arrow {
+    color: white;
+  }
+
+  @media (min-width: 768px) {
+    .articles-list {
+      grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .intro {
+      font-size: 1.1rem;
+      padding: 1.5rem;
+    }
+    
+    .article-content {
+      padding: 1.5rem;
+    }
   }
 </style>
