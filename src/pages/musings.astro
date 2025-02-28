@@ -7,80 +7,338 @@ const musingsPosts = await getCollection('musings');
 musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 ---
 
-<Layout title="Musings & Fun Stuff">
-    <h1>Musings & Fun Stuff</h1>
-    <ul class="musings-list">
-        {musingsPosts.map((post) => (
-        <li class="musings-item">
-          <a href={`/musings/${post.slug}`} class="musings-link">
-            <div class="musings-content">
-              <h2>{post.data.title}</h2>
-             <p>{post.data.description}</p>
-            </div>
-             <div class="musings-preview">
-                 {post.data.previewImage && <img src={post.data.previewImage} alt="preview"/>}
-                 {post.data.previewVideo && <video src={post.data.previewVideo} alt="preview" loop autoplay muted></video>}
-            </div>
-         </a>
-       </li>
-        ))}
-    </ul>
+<Layout title="Musings & Reflections">
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">Musings & Reflections</h1>
+            <p class="page-description">A collection of thoughts, ideas, and explorations</p>
+        </header>
+        
+        <ul class="musings-list">
+            {musingsPosts.map((post) => (
+            <li class="musings-item">
+                <a href={`/musings/${post.slug}`} class="musings-link">
+                    <div class="musings-content">
+                        <h2 class="musings-title">{post.data.title}</h2>
+                        <time class="musings-date" datetime={post.data.publishDate.toISOString()}>
+                            {new Date(post.data.publishDate).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}
+                        </time>
+                        <p class="musings-description">{post.data.description}</p>
+                        <span class="read-more">Continue reading <span class="arrow">→</span></span>
+                    </div>
+                    <div class="musings-preview-wrapper">
+                        <div class="musings-preview" id={`preview-${post.slug}`}>
+                            <div class="preview-loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            ))}
+        </ul>
+    </div>
 </Layout>
 
 <style>
-  .musings-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .musings-item {
-    margin-bottom: 1.5rem;
-    position: relative; /* Needed for absolute positioning of preview */
-  }
-  
-  .musings-link {
-     display: block;
-     text-decoration: none;
-     color: inherit;
-     border: 1px solid var(--color-border);
-     border-radius: 8px;
-     padding: 1rem;
-     position:relative;
-     transition: border-color 0.3s ease;
-  }
-
-   .musings-link:hover {
-     border-color: var(--color-primary)
-   }
-  .musings-content {
-     z-index: 2;
-     position: relative;
-  }
-
- .musings-preview {
-   display: none;
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100%;
-     height: 100%;
-   border-radius: 8px;
-     overflow: hidden;
-     z-index: 1;
- }
-    .musings-link:hover .musings-preview {
-         display: block;
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
     }
 
-    .musings-preview img,
-     .musings-preview video {
-         width: 100%;
-         height: 100%;
-          object-fit: cover;
-        opacity: 0.8;
-         transition: opacity 0.3s ease;
+    .page-header {
+        margin-bottom: 3rem;
+        text-align: center;
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
 
-     }
+    .page-header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--color-primary, #6a2fb8);
+        border-radius: 3px;
+    }
 
+    .page-title {
+        margin-bottom: 0.5rem;
+        font-size: 2.75rem;
+        color: var(--color-heading, #333);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .page-description {
+        font-size: 1.2rem;
+        color: var(--color-text-light, #666);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .musings-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .musings-item {
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+    
+    .musings-link {
+        display: flex;
+        text-decoration: none;
+        color: inherit;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--color-card-bg, #FFF1E7);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+    }
+
+    .musings-link:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .musings-content {
+        flex: 1;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 2;
+    }
+
+    .musings-title {
+        margin: 0 0 0.75rem;
+        font-size: 1.6rem;
+        color: var(--color-heading, #333);
+        font-weight: 700;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+    }
+
+    .musings-link:hover .musings-title {
+        color: var(--color-primary, #6a2fb8);
+    }
+
+    .musings-date {
+        font-size: 0.9rem;
+        color: var(--color-text-light, #666);
+        margin-bottom: 1.25rem;
+        display: block;
+        font-weight: 500;
+    }
+
+    .musings-description {
+        margin: 0 0 1.75rem;
+        line-height: 1.7;
+        color: var(--color-text, #444);
+        flex-grow: 1;
+        font-size: 1.05rem;
+    }
+
+    .read-more {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-primary, #6a2fb8);
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .arrow {
+        display: inline-block;
+        margin-left: 0.25rem;
+        transition: transform 0.3s ease;
+    }
+
+    .musings-link:hover .read-more .arrow {
+        transform: translateX(6px);
+    }
+
+    .musings-preview-wrapper {
+        width: 220px;
+        height: 220px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+        border-left: 1px solid rgba(0, 0, 0, 0.05);
+        background: var(--color-bg-alt, #FFF1E7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .musings-preview {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .preview-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .loading-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+        border-top-color: var(--color-primary, #6a2fb8);
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .musings-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease, filter 0.6s ease;
+        border-radius: 0;
+    }
+
+    .musings-link:hover .musings-preview img {
+        transform: scale(1.08);
+        filter: brightness(1.05);
+    }
+
+    .preview-fallback {
+        padding: 1rem;
+        text-align: center;
+        color: var(--color-text-light, #666);
+    }
+
+    @media (min-width: 768px) {
+        .musings-list {
+            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+        }
+    }
+
+    @media (max-width: 767px) {
+        .page-title {
+            font-size: 2rem;
+        }
+        
+        .musings-link {
+            flex-direction: column;
+        }
+        
+        .musings-preview-wrapper {
+            width: 100%;
+            height: 160px;
+            border-left: none;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            order: -1;
+        }
+        
+        .musings-content {
+            padding: 1.5rem;
+        }
+    }
 </style>
+
+<script>
+  // Import html2canvas dynamically
+  import('html2canvas').then(({ default: html2canvas }) => {
+    // Function to generate preview for a post
+    async function generatePreview(slug) {
+      try {
+        // Fetch the post content
+        const response = await fetch(`/musings/${slug}`);
+        const html = await response.text();
+        
+        // Create a temporary container to render the post
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = html;
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.width = '800px'; // Set a fixed width for the screenshot
+        tempContainer.style.background = 'var(--color-card-bg, #FFF1E7)'; // Match the site background
+        document.body.appendChild(tempContainer);
+        
+        // Find the article element in the fetched content
+        const articleElement = tempContainer.querySelector('article');
+        
+        if (articleElement) {
+          // Generate screenshot of the article
+          const canvas = await html2canvas(articleElement, {
+            scale: 0.35, // Scale down more for better performance and to show more content
+            logging: false,
+            backgroundColor: 'var(--color-card-bg, #FFF1E7)',
+            useCORS: true,
+            allowTaint: true,
+            windowWidth: 1200, // Set a consistent window width
+            windowHeight: 800 // Set a consistent window height
+          });
+          
+          // Get the preview container
+          const previewContainer = document.getElementById(`preview-${slug}`);
+          if (previewContainer) {
+            // Clear loading message
+            previewContainer.innerHTML = '';
+            
+            // Create image from canvas
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL('image/png');
+            img.alt = `Preview of ${slug}`;
+            previewContainer.appendChild(img);
+          }
+        }
+        
+        // Clean up
+        document.body.removeChild(tempContainer);
+      } catch (error) {
+        console.error(`Error generating preview for ${slug}:`, error);
+        const previewContainer = document.getElementById(`preview-${slug}`);
+        if (previewContainer) {
+          previewContainer.innerHTML = '<div class="preview-fallback">Preview not available</div>';
+        }
+      }
+    }
+
+    // Generate previews for all posts when they become visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const slug = entry.target.id.replace('preview-', '');
+          generatePreview(slug);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '200px' });
+
+    // Observe all preview containers
+    document.querySelectorAll('.musings-preview').forEach(preview => {
+      observer.observe(preview);
+    });
+  }).catch(error => {
+    console.error('Failed to load html2canvas:', error);
+  });
+</script>
