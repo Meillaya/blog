@@ -1,0 +1,28 @@
+/* Custom KaTeX styles */
+.math-display {
+  display: block;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.math-inline {
+  padding: 0 0.1em;
+}
+
+/* Ensure equations have proper spacing */
+.katex-display {
+  margin: 1.5rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Make inline math blend better with the text */
+.katex {
+  font-size: 1.1em;
+}
+
+/* Add some padding for scrollable overflow equations */
+.katex-display > .katex {
+  padding: 0.5rem 0;
+} 

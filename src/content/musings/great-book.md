@@ -13,7 +13,6 @@ publishDate: 2025-02-26
 My first foray into the incredible writing of Lispector. A self-reflective, existentialist examination of  identity, existence and the oftentimes tragedy of being alive.
 
 ![](https://siboehm.com/assets/img/CUDA-MMM/naive-kernel.png)
-
 When I think of masterpieces of Russian literature, I often think of Leo Tolstoy’s War and Peace and Anna Karenina, as well as Fyodor Dostoyevsky’s Crime and Punishment, and The Brothers Karamazov. I also think of Alexander Pushkin’s epic poem Eugene Onegin, Ivan Turgenev’s A Hunter’s Sketches, Fathers and Sons, First Love and Faust, Mikhail Lermontov’s A Hero of Our Time, Anton Chekhov’s plays and short stories – “The Three Sisters,” “Uncle Vanya,” and “The Cherry Orchard” – and Nicholai Gogol’s Dead Souls. During the period of Soviet oppression, there are such writers as Boris Pasternak who wrote Dr. Zhivago, Aleksandr Solzhenitsyn who wrote Cancer Ward, The Gulag Archipelago, One Day in the Life of Ivan Denisovich, August 1914, and March 1917. And then there is Mikhail Bulgakov, the author of noteworthy plays, and his masterpiece The Master and Margarita, written between 1928 and 1940, and published in 1966 and 1967.  
 
 I read the Penguin Classic Deluxe Edition, translated by Richard Pevear and Larissa Volokhonsky, with an Introduction by Richard Pevear and a Foreword by Boris Fishman.  

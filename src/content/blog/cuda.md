@@ -60,7 +60,7 @@ sgemm_naive<<<gridDim, blockDim>>>(M, N, K, alpha, A, B, beta, C);
 
 CUDA code is written from a single-thread perspective. In the code of the kernel, we access the `blockIdx` and `threadIdx` built-in variables. These will return different values based on the thread that’s accessing them.In our example, `threadIdx.x` and `threadIdx.y` will vary from 0 to 31 based on the position of the thread in the grid. Same for `blockIdx.x` and `blockIdx.y`, which will vary from 0 to `CEIL_DIV(N, 32)` or `CEIL_DIV(M, 32)` based on the position of the thread’s block in the grid. We’ll do a lot of indexing into strided in-memory representations of matrices. Edward Yang’s post on [PyTorch Internals](http://blog.ezyang.com/2019/05/pytorch-internals/) contains a good explanation of strided tensors.
 
-```cuda
+```c++
 __global__ void sgemm_naive(int M, int N, int K, float alpha, const float *A,
                             const float *B, float beta, float *C) {
   // compute position in C that this thread is responsible for
@@ -129,7 +129,7 @@ In reality, the GPU supports 32B, 64B and 128B memory accesses. So, if each thre
 
 Looking back at the previous kernel, we assigned threads their entry of C like so:
 
-```cuda
+```c++
 const uint x = blockIdx.x * blockDim.x + threadIdx.x;
 const uint y = blockIdx.y * blockDim.y + threadIdx.y;
 ```
@@ -144,7 +144,7 @@ To enable coalescing, we can change how we assign positions of the result matrix
 
 To implement this, we only need to change the first two lines:
 
-```cuda
+```c++
 const int x = blockIdx.x * BLOCKSIZE + (threadIdx.x / BLOCKSIZE);
 const int y = blockIdx.y * BLOCKSIZE + (threadIdx.x % BLOCKSIZE);
 
@@ -181,7 +181,7 @@ This is illustrated below:
 
 The important parts of the code are below, with variable names corresponding to the plot above:In general, I didn’t write the code to work for arbitrary sizes of M, N and K, as the condition checking introduces a lot of clutter and isn’t very interesting. To make sure the kernel works correctly, I test it with random data and a few different matrix sizes by comparing to cuBLAS.
 
-```cuda
+```c++
 // advance pointers to the starting positions
 A += cRow * BLOCKSIZE * K;                    // row=cRow, col=0
 B += cCol * BLOCKSIZE;                        // row=0, col=cCol

@@ -16,6 +16,9 @@ Most of the past work on this topic has been quite theoretical and focused on de
 
 Reward function defines the task, and reward shaping significantly impacts learning efficiency and accuracy in [reinforcement learning](https://lilianweng.github.io/posts/2018-02-19-rl-overview/). Designing a reward function for an RL task often feels like a ‘dark art’. Many factors contribute to this complexity: How you decompose a big goal into small goals? Is the reward sparse or dense? How you measure the success? Various choices may lead to good or problematic learning dynamics, including unlearnable tasks or hackable reward functions. There is a long history of research on how to do reward shaping in RL.
 
+$$
+F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i\omega t} dt
+$$
 For example, in an [1999 paper by Ng et al.](https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/NgHaradaRussell-shaping-ICML1999.pdf), the authors studied how to modify the reward function in [Markov Decision Processes (MDPs)](https://lilianweng.github.io/posts/2018-02-19-rl-overview/#markov-decision-processes) such that the optimal policy remains unchanged. They found that linear transformation works. Given a MDP , we want to create a transformed MDP where and , such that we can guide the learning algorithm to be more efficient. Given a real-valued function , is a potential-based shaping function if for all :
 
 This would guarantee that the sum of discounted , , ends up being 0. If is such a potential-based shaping function, it is both *sufficient* and *necessary* to ensure and share the same optimal policies.
