@@ -1,3 +1,4 @@
+---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
@@ -27,6 +28,7 @@ const {
 
 // Determine if src is a string (remote or public path) or an imported image
 const isRemoteOrPublic = typeof src === 'string';
+---
 
 <figure class:list={['optimized-image-container', className]}>
   {isRemoteOrPublic ? (
