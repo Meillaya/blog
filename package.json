@@ -30,6 +30,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
+    "sharp": "^0.33.5",
     "shiki": "^1.24.4",
     "shiki-languages": "^0.2.7",
     "shiki-themes": "^0.2.7",

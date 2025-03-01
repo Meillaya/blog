@@ -19,7 +19,11 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props as Props;
-const processedContent = await processMarkdown(entry.body, remarkSidenotes);
+const { Content } = await entry.render();
+
+// Only process with custom markdown handler if not MDX
+const isMdx = entry.id.endsWith('.mdx');
+const processedContent = isMdx ? null : await processMarkdown(entry.body, remarkSidenotes);
 
 const footnotes = extractFootnotes(entry.body);
 ---
@@ -33,7 +37,7 @@ const footnotes = extractFootnotes(entry.body);
         <time datetime={entry.data.publishDate.toISOString()}>
             {entry.data.publishDate.toDateString()}
         </time>
-        <div set:html={processedContent} />
+        {isMdx ? <Content /> : <div set:html={processedContent} />}
     </article>
-      <FootnoteContainer client:load footnotes={footnotes} />
+    <FootnoteContainer client:load footnotes={footnotes} />
 </Layout>

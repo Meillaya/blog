@@ -24,12 +24,16 @@ const progressReportsCollection = defineCollection({
 
 const musingsCollection = defineCollection({
   type: 'content',
-  schema: z.object({
+  // Support both .md and .mdx files in the musings collection
+  schema: ({ image }) => z.object({
     title: z.string(),
     publishDate: z.date(),
     description: z.string(),
+    // Support for optimized images in the frontmatter if needed
     previewImage: z.string().optional(),
-    previewVideo: z.string().optional()
+    previewVideo: z.string().optional(),
+    // Add image support for frontmatter
+    image: image().optional(),
   }),
 });
 

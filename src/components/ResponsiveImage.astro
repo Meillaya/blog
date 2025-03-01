@@ -1,0 +1,76 @@
+import { Picture } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  sizes?: string;
+  widths?: number[];
+  aspectRatio?: number;
+  formats?: Array<'avif' | 'webp' | 'jpeg' | 'jpg' | 'png' | 'gif'>;
+  fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
+  position?: 'top' | 'right top' | 'right' | 'right bottom' | 'bottom' | 'left bottom' | 'left' | 'left top' | 'center';
+  background?: string;
+  class?: string;
+  pictureAttributes?: Record<string, any>;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync' | 'auto';
+  caption?: string;
+}
+
+const {
+  src,
+  alt,
+  sizes = '(min-width: 1024px) 1024px, 100vw',
+  widths = [400, 800, 1200],
+  aspectRatio,
+  formats = ['avif', 'webp', 'jpeg'],
+  fit = 'cover',
+  position = 'center',
+  background,
+  class: className,
+  pictureAttributes = {},
+  loading = 'lazy',
+  decoding = 'async',
+  caption
+} = Astro.props;
+
+<figure class:list={['responsive-image', className]}>
+  <Picture
+    src={src}
+    alt={alt}
+    sizes={sizes}
+    widths={widths}
+    aspectRatio={aspectRatio}
+    formats={formats}
+    fit={fit}
+    position={position}
+    background={background}
+    loading={loading}
+    decoding={decoding}
+    {...pictureAttributes}
+  />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .responsive-image {
+    display: block;
+    margin: 2rem 0;
+    width: 100%;
+  }
+
+  .responsive-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .responsive-image figcaption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #666;
+  }
+</style> 

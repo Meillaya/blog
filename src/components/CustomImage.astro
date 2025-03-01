@@ -1,0 +1,34 @@
+import { Image } from 'astro:assets';
+
+const { src, alt, width, height, caption, class: className } = Astro.props;
+
+<figure class:list={['custom-image', className]}>
+  <Image 
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+  />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .custom-image {
+    margin: 1.5rem 0;
+  }
+  
+  .custom-image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  
+  .custom-image figcaption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+</style> 

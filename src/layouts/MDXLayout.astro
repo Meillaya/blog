@@ -1,0 +1,70 @@
+---
+import Layout from './Layout.astro';
+import '../styles/base.css';
+import '../styles/typography.css';
+import '../styles/article.css';
+import '../styles/katex.css';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    publishDate: Date;
+    description?: string;
+    image?: any;
+  }
+}
+
+const { frontmatter } = Astro.props;
+const { title, publishDate, description } = frontmatter;
+
+// Format the date
+const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<Layout title={title} description={description}>
+  <article class="article">
+    <header>
+      <h1>{title}</h1>
+      <div class="article-meta">
+        <time datetime={publishDate.toISOString()}>{formattedDate}</time>
+      </div>
+    </header>
+    
+    <div class="article-content mdx-content">
+      <slot />
+    </div>
+  </article>
+</Layout>
+
+<style is:global>
+  /* Styles specifically for MDX content */
+  .mdx-content figure {
+    margin: 2rem 0;
+  }
+  
+  .mdx-content figure img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  
+  .mdx-content figcaption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  /* Enhanced focus states for keyboard navigation */
+  .mdx-content a:focus,
+  .mdx-content img:focus {
+    outline: 2px solid #0077CC;
+    outline-offset: 2px;
+  }
+</style> 
