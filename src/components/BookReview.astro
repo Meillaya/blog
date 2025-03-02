@@ -5,18 +5,19 @@ interface Props {
   author: string;
   rating: number;
   altText?: string;
+  alignment?: 'left' | 'center' | 'right';
 }
 
 import { Image } from 'astro:assets';
 import { getImage } from 'astro:assets';
 
-const { coverImage, title, author, rating, altText } = Astro.props;
+const { coverImage, title, author, rating, altText, alignment = 'left' } = Astro.props;
 
 // Determine if we're using a string path or an ImageMetadata object
 const isImagePath = typeof coverImage === 'string';
 ---
 
-<div class="book-review">
+<div class={`book-review alignment-${alignment}`}>
   <div class="book-header">
     <div class="book-cover">
       {isImagePath ? (
@@ -146,6 +147,29 @@ const isImagePath = typeof coverImage === 'string';
     .book-intro {
       flex: 1;
       padding-left: 1.5rem;
+    }
+
+    /* Alignment variations */
+    .alignment-left .book-header {
+      justify-content: flex-start;
+    }
+
+    .alignment-center .book-header {
+      justify-content: center;
+    }
+
+    .alignment-center .book-intro {
+      flex: 0 1 auto;
+      max-width: 50%;
+    }
+
+    .alignment-right .book-header {
+      flex-direction: row-reverse;
+    }
+
+    .alignment-right .book-intro {
+      padding-left: 0;
+      padding-right: 1.5rem;
     }
   }
 </style> 
