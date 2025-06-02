@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+// Removed getCollection import as it's not used
 ---
 
 <Layout title="About - Your Technical Blog">
@@ -10,11 +10,15 @@ import { getCollection } from 'astro:content';
     <div class="about-content">
       <div class="bio-section">
         <p>
-          I'm a software engineer focused on high-performance computing and systems optimization.
+          I'm a software engineer focused on high-performance computing and systems programming.
           This blog is where I share my experiences and insights about software engineering,
           particularly in areas of performance optimization and low-level systems programming.
         </p>
 
+        <p>
+          This is also where I share my thoughts on my reading in fiction and historical materialism, marxist feminism
+          and critical theory.
+        </p>
         <p>
           My work primarily involves:
         </p>
@@ -26,6 +30,8 @@ import { getCollection } from 'astro:content';
           <li><span class="skill-highlight">Machine learning infrastructure</span></li>
         </ul>
       </div>
+      
+    
 
       <div class="connect-section">
         <h2>Connect</h2>
@@ -76,41 +82,52 @@ import { getCollection } from 'astro:content';
 
 <style>
   .about-container {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 900px; /* Increased max-width for a bit more space */
+    margin: 2rem auto; /* Added top margin */
+    padding: 0 1.5rem; /* Consistent padding with index */
+    background: var(--color-card-bg, #FFF1E7); /* Background from index */
+    border-radius: 16px; /* Rounded corners from index */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Subtle shadow from index */
+    padding: 2.5rem; /* More internal padding */
   }
 
   .about-title {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem; /* Increased margin */
     position: relative;
     display: inline-block;
+    font-size: 2.5rem; /* Slightly larger title */
+    color: var(--color-heading, #333); /* Heading color from index */
+    font-weight: 700;
   }
 
   .about-title::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -12px; /* Adjusted position */
     left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--link-color);
+    width: 70px; /* Longer underline */
+    height: 3px; /* Thicker underline */
+    background-color: var(--color-primary, #6a2fb8); /* Primary color from index */
+    border-radius: 3px;
   }
 
   .about-content {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.5rem; /* Consistent gap */
   }
 
   .bio-section p {
     margin-bottom: 1.5rem;
-    font-size: 1.2rem;
+    font-size: 1.15rem; /* Slightly adjusted font size for readability */
     line-height: 1.7;
+    color: var(--color-text, #444); /* Text color from index */
   }
 
   .skills-list {
-    margin: 1.5rem 0 2rem 0;
+    margin: 1.5rem 0 2.5rem 0; /* Adjusted margin */
     list-style-type: none;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
@@ -118,21 +135,40 @@ import { getCollection } from 'astro:content';
 
   .skill-highlight {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: rgba(106, 47, 184, 0.1);
-    border-radius: 4px;
+    padding: 0.6rem 1.2rem; /* Slightly larger padding */
+    background-color: rgba(106, 47, 184, 0.08); /* Primary color with low opacity */
+    border: 1px solid rgba(106, 47, 184, 0.2); /* Subtle border with primary color */
+    border-radius: 8px; /* More rounded */
     font-size: 1rem;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    font-weight: 500; /* Slightly bolder */
+    color: var(--color-primary-dark, #5a1fa8); /* Darker primary color for text */
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .skill-highlight:hover {
-    transform: translateY(-2px);
-    background-color: rgba(106, 47, 184, 0.15);
+    transform: translateY(-3px) scale(1.03); /* Enhanced hover effect */
+    background-color: rgba(106, 47, 184, 0.12);
+    box-shadow: 0 4px 10px rgba(106, 47, 184, 0.1);
   }
 
   .connect-section h2 {
+    font-size: 1.8rem; /* Consistent with index section titles */
     margin-bottom: 1.5rem;
-    font-size: 1.8rem;
+    color: var(--color-heading, #333);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+
+  .connect-section h2::after { /* Underline for connect section title */
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--color-primary, #6a2fb8);
+    border-radius: 3px;
   }
 
   .social-links {
@@ -145,34 +181,51 @@ import { getCollection } from 'astro:content';
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.75rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    padding: 0.85rem 1rem; /* Adjusted padding */
+    border-radius: 12px; /* More rounded corners */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth transition from index */
     text-decoration: none;
-    color: var(--text-color);
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: var(--color-text, #444);
+    background-color: #FFF1E7; /* White background for cards */
+    border: 1px solid rgba(0, 0, 0, 0.08); /* Subtle border */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* Subtle shadow */
   }
 
   .social-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    background-color: white;
-    text-decoration: none;
+    transform: translateY(-5px); /* Enhanced hover effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07); /* More prominent shadow on hover */
+    background-color: #FFF1E7;
+    border-color: rgba(106, 47, 184, 0.3); /* Primary color border on hover */
+    color: var(--color-primary-dark, #5a1fa8); /* Text color changes to primary on hover */
   }
 
   .social-link svg {
-    color: var(--link-color);
+    color: var(--color-primary, #6a2fb8); /* SVG color from index */
+    transition: color 0.3s ease;
+  }
+  .social-link:hover svg {
+    color: var(--color-primary-dark, #5a1fa8); /* Darker SVG on hover */
   }
 
   @media (max-width: 768px) {
+    .about-container {
+      margin: 1rem auto;
+      padding: 1.5rem;
+    }
+    .about-title {
+      font-size: 2rem;
+    }
     .skills-list {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.75rem; /* Adjusted gap for mobile */
     }
 
     .social-links {
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: 1fr; /* Single column on smaller screens */
+      gap: 1rem;
+    }
+    .skill-highlight {
+      padding: 0.5rem 1rem;
     }
   }
 </style>
