@@ -5,46 +5,44 @@ interface Props {
   author: string;
   rating: number;
   altText?: string;
-  alignment?: 'left' | 'center' | 'right';
 }
 
-import { Image } from 'astro:assets';
-import { getImage } from 'astro:assets';
+import { Image, type ImageMetadata } from 'astro:assets';
 
-const { coverImage, title, author, rating, altText, alignment = 'left' } = Astro.props;
+const { coverImage, title, author, rating, altText } = Astro.props;
 
 // Determine if we're using a string path or an ImageMetadata object
 const isImagePath = typeof coverImage === 'string';
 ---
 
-<div class={`book-review alignment-${alignment}`}>
+<div class="book-review">
   <div class="book-header">
     <div class="book-cover">
       {isImagePath ? (
         <img 
           src={coverImage} 
           alt={altText || `${title} book cover`} 
-          width={300} 
-          height={450}
+          width={300} /* Adjusted later by CSS */
+          height={450} /* Adjusted later by CSS */
           class="cover-image"
         />
       ) : (
         <Image 
           src={coverImage} 
           alt={altText || `${title} book cover`} 
-          width={300} 
-          height={450}
+          width={300} /* Adjusted later by CSS */
+          height={450} /* Adjusted later by CSS */
           class="cover-image"
         />
       )}
-      <div class="book-info">
-        <h3 class="book-title">{title}</h3>
-        <p class="book-author">by {author}</p>
-        <div class="book-rating">
-          {Array(5).fill(0).map((_, i) => (
-            <span class={`star ${i < rating ? 'filled' : 'empty'}`}>★</span>
-          ))}
-        </div>
+    </div>
+    <div class="book-info">
+      <h3 class="book-title">{title}</h3>
+      <p class="book-author">by {author}</p>
+      <div class="book-rating">
+        {Array(5).fill(0).map((_, i) => (
+          <span class={`star ${i < rating ? 'filled' : 'empty'}`}>★</span>
+        ))}
       </div>
     </div>
     <div class="book-intro">
@@ -60,30 +58,32 @@ const isImagePath = typeof coverImage === 'string';
   .book-review {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background-color: var(--color-bg-secondary, #FFF1E7);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    gap: 1rem; /* Reduced gap */
+    margin: 2rem auto; /* Centering the component */
+    padding: 1rem; /* Adjusted padding */
+    max-width: 700px; /* Typical content width */
+    /* background-color: var(--color-bg-secondary, #FFF1E7); */ /* Keep commented out or remove */
+    border-radius: 0; /* Substack often has no border-radius for the main content block */
+    box-shadow: none; /* Substack has minimal to no shadow on the main content block */
   }
 
   .book-header {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    align-items: center; /* Center cover image and book info */
+    gap: 1rem; /* Reduced gap */
   }
 
   .book-cover {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    display: flex; /* To center the image if it's smaller than max-width */
+    justify-content: center;
+    width: 100%;
+    max-width: 400px; /* Max width for the cover image */
   }
 
   .cover-image {
     border-radius: 8px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 100%;
     height: auto;
     object-fit: cover;
@@ -96,22 +96,23 @@ const isImagePath = typeof coverImage === 'string';
 
   .book-title {
     margin: 0.5rem 0 0.25rem;
-    font-size: 1.5rem;
+    font-size: 2rem; /* Larger title */
     font-weight: 700;
   }
 
   .book-author {
     margin: 0 0 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-style: italic;
-    color: var(--color-text-secondary, #6c757d);
+    color: var(--color-text-secondary, #555);
   }
 
   .book-rating {
     display: flex;
     justify-content: center;
     gap: 0.25rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+    margin-bottom: 1rem; /* Space before intro */
   }
 
   .star {
@@ -122,54 +123,33 @@ const isImagePath = typeof coverImage === 'string';
     color: #ffc107;
   }
 
-  .book-intro {
-    font-size: 1.1rem;
-    line-height: 1.6;
-  }
-
+  .book-intro,
   .book-content {
     font-size: 1.1rem;
-    line-height: 1.6;
+    line-height: 1.7; /* Increased line height for readability */
     width: 100%;
+    text-align: left; /* Ensure text is left-aligned */
+  }
+  
+  .book-intro p:first-child,
+  .book-content p:first-child {
+      margin-top: 0;
   }
 
-  /* Responsive layout for larger screens */
+  .book-intro p:last-child,
+  .book-content p:last-child {
+      margin-bottom: 0;
+  }
+
+
+  /* Responsive layout for larger screens - simplified */
   @media (min-width: 768px) {
     .book-header {
-      flex-direction: row;
-      align-items: flex-start;
+      /* Already column and centered, further specific overrides if needed */
     }
-
-    .book-cover {
-      flex: 0 0 300px;
-    }
-
-    .book-intro {
-      flex: 1;
-      padding-left: 1.5rem;
-    }
-
-    /* Alignment variations */
-    .alignment-left .book-header {
-      justify-content: flex-start;
-    }
-
-    .alignment-center .book-header {
-      justify-content: center;
-    }
-
-    .alignment-center .book-intro {
-      flex: 0 1 auto;
-      max-width: 50%;
-    }
-
-    .alignment-right .book-header {
-      flex-direction: row-reverse;
-    }
-
-    .alignment-right .book-intro {
-      padding-left: 0;
-      padding-right: 1.5rem;
+    .book-intro,
+    .book-content {
+        /* Potentially add more specific typography/spacing for larger screens if desired */
     }
   }
 </style> 

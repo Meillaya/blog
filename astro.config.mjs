@@ -6,6 +6,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
+  site: 'https://meillaya.vercel.app',
   integrations: [
     mdx({
       // Enable .mdx files to use imports and exports
