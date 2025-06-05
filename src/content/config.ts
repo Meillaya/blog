@@ -40,6 +40,5 @@ const musingsCollection = defineCollection({
 
 export const collections = {
   'blog': blogCollection,
-  'progress-reports': progressReportsCollection,
   'musings': musingsCollection
 };

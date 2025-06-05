@@ -8,21 +8,22 @@ export async function GET(context) {
   // Combine posts from all desired collections
   const allPosts = [...blogPosts, ...musingsPosts];
 
-  // Sort all posts by publication date (newest first)
-  const sortedPosts = allPosts.sort((a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf());
+  // Sort all posts by publication date (newest first), using 'publishDate'
+  const sortedPosts = allPosts.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf());
 
   return rss({
     // `<title>` field in output xml
     title: 'meillayas technical blog', // Update with your blog's title
     // `<description>` field in output xml
-    description: 'Your actual blog description here', // Update with your blog's description
+    description: '', // Update with your blog's description
     // Base URL for your site. Used to generate `<link>` URLs for items.
     site: context.site,
     // List of `<item>`s in output xml
     // Actual items, e.g. posts, talks, products, etc.
     items: sortedPosts.map((post) => ({
       title: post.data.title,
-      pubDate: post.data.pubDate,
+      // RSS field is pubDate, but we get the value from publishDate
+      pubDate: new Date(post.data.publishDate),
       description: post.data.description,
       // Dynamically generate link based on collection
       link: `/${post.collection}/${post.slug}/`, // Assumes URLs like /blog/slug/ or /musings/slug/
