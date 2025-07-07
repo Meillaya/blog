@@ -7,14 +7,14 @@ const musingsPosts = await getCollection('musings');
 musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 ---
 
-<Layout title="Reflections">
+<Layout title="Essays">
     <div class="container">
         <header class="page-header">
-            <h1 class="page-title">Reflections</h1>
+            <h1 class="page-title">Essays</h1>
             <p class="page-description">
-                “What a relief to have nothing to say, the right to say nothing,
+                "What a relief to have nothing to say, the right to say nothing,
                 because only then is there a chance of framing the rare, or ever rarer,
-                the thing that might be worth saying.”
+                the thing that might be worth saying."
             </p>
             <p class="page-description">
                 - Deleuze, <i>Negotiations 1972-1990</i>
