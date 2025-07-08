@@ -1,0 +1,282 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+  const essaysPosts = await getCollection('essays');
+  const notesPosts = await getCollection('notes');
+  
+  const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts];
+  
+  const tagSet = new Set<string>();
+  allPosts.forEach(post => {
+    const tags = post.data.tags || [];
+    tags.forEach(tag => tagSet.add(tag.toLowerCase()));
+  });
+  
+  return Array.from(tagSet).map(tag => ({
+    params: { tag },
+    props: { tag }
+  }));
+}
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+
+// Get all posts again for the specific tag
+const blogPosts = await getCollection('blog');
+const essaysPosts = await getCollection('essays');
+const notesPosts = await getCollection('notes');
+
+const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts];
+
+// Filter posts by tag
+const taggedPosts = allPosts.filter(post => {
+  const tags = post.data.tags || [];
+  return tags.some(t => t.toLowerCase() === tag.toLowerCase());
+});
+
+// Sort by date (newest first)
+taggedPosts.sort((a, b) => new globalThis.Date(b.data.publishDate).getTime() - new globalThis.Date(a.data.publishDate).getTime());
+
+// Get the original case of the tag
+const originalTag = taggedPosts[0]?.data.tags?.find(t => t.toLowerCase() === tag.toLowerCase()) || tag;
+---
+
+<Layout title={`Posts tagged "${originalTag}" - meillaya`} description={`All posts tagged with ${originalTag}`}>
+  <div class="tag-page">
+    <div class="tag-header">
+      <h1>Posts tagged "{originalTag}"</h1>
+      <p>{taggedPosts.length} post{taggedPosts.length !== 1 ? 's' : ''} found</p>
+    </div>
+
+    <div class="posts-list">
+      {taggedPosts.map((post) => (
+        <article class="post-item">
+          <a href={`/${post.collection}/${post.slug}`} class="post-link">
+            <div class="post-content">
+              <h2 class="post-title">{post.data.title}</h2>
+              <div class="post-meta">
+                <span class="post-collection">{post.collection}</span>
+                <time class="post-date" datetime={post.data.publishDate.toISOString()}>
+                  {new globalThis.Date(post.data.publishDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+              <p class="post-description">{post.data.description}</p>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <div class="post-tags">
+                  {post.data.tags.map(postTag => (
+                    <span class={`tag ${postTag.toLowerCase() === tag.toLowerCase() ? 'current-tag' : ''}`}>
+                      {postTag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <span class="read-more">Read more <span class="arrow">→</span></span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div class="tag-navigation">
+      <a href="/tags" class="back-to-tags">← Back to all tags</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .tag-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .tag-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .tag-header h1 {
+    font-size: 2.5rem;
+    color: var(--color-heading, #333);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .tag-header p {
+    font-size: 1.1rem;
+    color: var(--color-text-light, #666);
+  }
+
+  .posts-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .post-item {
+    transition: transform 0.3s ease;
+  }
+
+  .post-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-card-bg, #FFF1E7);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    height: 100%;
+  }
+
+  .post-link:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .post-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-title {
+    margin: 0 0 1rem;
+    font-size: 1.6rem;
+    color: var(--color-heading, #333);
+    font-weight: 700;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .post-link:hover .post-title {
+    color: var(--color-primary, #6a2fb8);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .post-collection {
+    background: var(--color-primary, #6a2fb8);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .post-date {
+    color: var(--color-text-light, #666);
+    font-weight: 500;
+  }
+
+  .post-description {
+    margin: 0 0 1.5rem;
+    line-height: 1.7;
+    color: var(--color-text, #444);
+    font-size: 1.05rem;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    background: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    color: var(--color-text, #555);
+    font-weight: 500;
+  }
+
+  .tag.current-tag {
+    background: var(--color-primary, #6a2fb8);
+    color: white;
+  }
+
+  .read-more {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary, #6a2fb8);
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+  }
+
+  .arrow {
+    display: inline-block;
+    margin-left: 0.25rem;
+    transition: transform 0.3s ease;
+  }
+
+  .post-link:hover .read-more .arrow {
+    transform: translateX(6px);
+  }
+
+  .tag-navigation {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .back-to-tags {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--color-primary, #6a2fb8);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .back-to-tags:hover {
+    background: var(--color-primary-dark, #5a1fa8);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(106, 47, 184, 0.15);
+  }
+
+  @media (min-width: 768px) {
+    .posts-list {
+      grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tag-header h1 {
+      font-size: 2rem;
+    }
+    
+    .post-content {
+      padding: 1.5rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style> 

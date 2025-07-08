@@ -4,7 +4,31 @@ interface Props {
   description?: string;
 }
 import Footer from '../components/Footer.astro';
+import { BurgerMenu } from '../components/BurgerMenu';
+import { getCollection } from 'astro:content';
+import { createSearchablePost } from '../utils/search';
+
 const { title, description = "A technical blog about software engineering and performance optimization" } = Astro.props;
+
+// Get data for the burger menu
+const blogPosts = await getCollection('blog');
+const essaysPosts = await getCollection('essays'); 
+const notesPosts = await getCollection('notes');
+
+// Create searchable posts
+const searchablePosts = [
+  ...blogPosts.map(post => createSearchablePost(post)),
+  ...essaysPosts.map(post => createSearchablePost(post)),
+  ...notesPosts.map(post => createSearchablePost(post))
+];
+
+// Get all tags
+const allTags = new Set<string>();
+[...blogPosts, ...essaysPosts, ...notesPosts].forEach(post => {
+  const tags = post.data.tags || [];
+  tags.forEach(tag => allTags.add(tag));
+});
+const tagsArray = Array.from(allTags).sort();
 ---
 
 <!doctype html>
@@ -32,6 +56,11 @@ const { title, description = "A technical blog about software engineering and pe
           <a href="/notes">NOTES</a>
           <a href="/archive">ARCHIVE</a>
           <a href="/about">ABOUT</a>
+          <BurgerMenu 
+            client:load 
+            posts={searchablePosts} 
+            tags={tagsArray} 
+          />
         </div>
       </nav>
     </header>
@@ -79,6 +108,7 @@ const { title, description = "A technical blog about software engineering and pe
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
 
   .site-title {
@@ -87,8 +117,13 @@ const { title, description = "A technical blog about software engineering and pe
     color: var(--text-color);
   }
 
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
   .nav-links a {
-    margin-left: 2rem;
     text-decoration: none;
     color: var(--text-color);
   }

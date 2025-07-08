@@ -17,6 +17,7 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "astro": "^5.11.0",
+    "fuse.js": "^7.1.0",
     "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
     "iframe-resizer": "^5.3.3",
@@ -35,6 +36,7 @@
     "shiki": "^1.24.4",
     "shiki-languages": "^0.2.7",
     "shiki-themes": "^0.2.7",
+    "styled-jsx": "^5.1.7",
     "unified": "^11.0.4"
   },
   "devDependencies": {

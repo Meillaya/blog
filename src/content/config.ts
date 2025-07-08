@@ -7,7 +7,7 @@ const blogCollection = defineCollection({
     title: z.string(),
     publishDate: z.date(),
     description: z.string(),
-    // tags: z.array(z.string()),
+    tags: z.array(z.string()).optional().default([]),
     // image: z.string().optional(),
   }),
 });
@@ -29,6 +29,7 @@ const essaysCollection = defineCollection({
     title: z.string(),
     publishDate: z.date(),
     description: z.string(),
+    tags: z.array(z.string()).optional().default([]),
     // Support for optimized images in the frontmatter if needed
     previewImage: z.string().optional(),
     previewVideo: z.string().optional(),
@@ -44,6 +45,7 @@ const notesCollection = defineCollection({
     title: z.string(),
     publishDate: z.date(),
     description: z.string(),
+    tags: z.array(z.string()).optional().default([]),
     // Support for optimized images in the frontmatter if needed
     previewImage: z.string().optional(),
     previewVideo: z.string().optional(),

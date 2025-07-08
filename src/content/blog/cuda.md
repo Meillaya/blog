@@ -2,6 +2,7 @@
 title: "How to Optimize a CUDA Matmul Kernel for cuBLAS-like Performance: a Worklog"
 description: "In this post, I’ll iteratively optimize an implementation of matrix multiplication written in CUDA. My goal is not to build a cuBLAS replacement, but to deeply understand the most important performance characteristics of the GPUs that are used for modern deep learning. This includes coalescing global memory accesses, shared memory caching and occupancy optimizations, among others."
 publishDate: 2024-09-02
+tags: ["CUDA", "GPU Programming", "Performance Optimization", "Systems Programming", "Matrix Multiplication", "Deep Learning", "Computer Graphics"]
 ---
 
 In this post, I’ll iteratively optimize an implementation of matrix multiplication written in CUDA. My goal is not to build a cuBLAS replacement, but to deeply understand the most important performance characteristics of the GPUs that are used for modern deep learning. This includes coalescing global memory accesses, shared memory caching and occupancy optimizations, among others.[^1] [^2]
