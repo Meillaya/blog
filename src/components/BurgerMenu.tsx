@@ -62,19 +62,13 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
       </button>
 
       {/* Overlay */}
-      {/* REMOVED: {isOpen && <div className="burger-overlay" />} */}
+      {isOpen && <div className="burger-overlay" />}
 
       {/* Menu */}
       <div id="burger-menu" className={`burger-menu ${isOpen ? 'open' : ''}`}>
         <div className="burger-header">
           <h2>Explore</h2>
-          <button 
-            className="close-button"
-            onClick={toggleMenu}
-            aria-label="Close menu"
-          >
-            ×
-          </button>
+          {/* REMOVED: Close button */}
         </div>
 
         <div className="burger-content">
@@ -169,7 +163,17 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* REMOVED: .burger-overlay styles */
+        .burger-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(4px);
+          z-index: 998;
+          animation: fadeIn 0.3s ease-out;
+        }
 
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -214,26 +218,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           font-weight: 600;
         }
 
-        .close-button {
-          background: none;
-          border: none;
-          font-size: 1.8rem;
-          cursor: pointer;
-          color: var(--color-text, #333);
-          transition: all 0.3s ease;
-          width: 36px;
-          height: 36px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          line-height: 1;
-        }
-
-        .close-button:hover {
-          background: rgba(106, 47, 184, 0.1);
-          color: var(--color-primary, #6a2fb8);
-        }
+        /* REMOVED: .close-button styles */
 
         .burger-content {
           padding: 0;
