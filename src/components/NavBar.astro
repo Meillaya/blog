@@ -41,7 +41,7 @@ const { posts, tags } = Astro.props;
         align-items: center;
         position: relative;
         width: 100%;
-        gap: 2rem;
+        justify-content: space-between;
     }
 
     .site-title {
@@ -61,14 +61,13 @@ const { posts, tags } = Astro.props;
         display: flex;
         align-items: center;
         gap: 2rem;
-        margin-left: auto;
     }
 
     .nav-links {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 1.5rem;
+        gap: 0.5rem;
         flex-wrap: nowrap;
     }
     
