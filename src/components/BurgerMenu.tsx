@@ -62,7 +62,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
       </button>
 
       {/* Overlay */}
-      {isOpen && <div className="burger-overlay" />}
+      {/* REMOVED: {isOpen && <div className="burger-overlay" />} */}
 
       {/* Menu */}
       <div id="burger-menu" className={`burger-menu ${isOpen ? 'open' : ''}`}>
@@ -120,23 +120,11 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           </div>
 
           {/* Stats */}
-          <div className="menu-section">
-            <h3>STATS</h3>
-            <div className="stats-grid">
-              <div className="stat-item">
-                <div className="stat-number">{posts.length}</div>
-                <div className="stat-label">Total Posts</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">{tags.length}</div>
-                <div className="stat-label">Tags</div>
-              </div>
-            </div>
-          </div>
+          {/* REMOVED: Stats section */}
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .burger-button {
           position: relative;
           width: 40px;
@@ -181,17 +169,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        .burger-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.3);
-          backdrop-filter: blur(4px);
-          z-index: 998;
-          animation: fadeIn 0.3s ease-out;
-        }
+        /* REMOVED: .burger-overlay styles */
 
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -211,6 +189,8 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           overflow-y: auto;
           display: flex;
           flex-direction: column;
+          border-top-left-radius: 16px;
+          border-bottom-left-radius: 16px;
         }
 
         .burger-menu.open {
@@ -338,34 +318,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           color: var(--color-primary, #6a2fb8);
         }
 
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1rem;
-          padding: 0 1.5rem;
-        }
-
-        .stat-item {
-          background: var(--color-card-bg, #FFF1E7);
-          padding: 1rem;
-          border-radius: 8px;
-          text-align: center;
-          border: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .stat-number {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: var(--color-primary, #6a2fb8);
-          margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-          font-size: 0.8rem;
-          color: var(--color-text-light, #666);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
+        /* REMOVED: .stats-grid and .stat-item styles */
 
         /* Mobile specific adjustments */
         @media (max-width: 480px) {
