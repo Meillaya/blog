@@ -2,39 +2,34 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-const musingsPosts = await getCollection('musings');
+const notesPosts = await getCollection('notes');
 
-musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+notesPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 ---
 
-<Layout title="Essays">
+<Layout title="Notes">
     <div class="container">
         <header class="page-header">
-            <h1 class="page-title">Essays</h1>
+            <h1 class="page-title">Notes</h1>
             <p class="page-description">
-                "What a relief to have nothing to say, the right to say nothing,
-                because only then is there a chance of framing the rare, or ever rarer,
-                the thing that might be worth saying."
-            </p>
-            <p class="page-description">
-                - Deleuze, <i>Negotiations 1972-1990</i>
+                Quick thoughts, observations, and reflections on various topics.
             </p>
         </header>
         
-        <ul class="musings-list">
-            {musingsPosts.map((post) => (
-            <li class="musings-item">
-                <a href={`/musings/${post.slug}`} class="musings-link">
-                    <div class="musings-content">
-                        <h2 class="musings-title">{post.data.title}</h2>
-                        <time class="musings-date" datetime={post.data.publishDate.toISOString()}>
+        <ul class="notes-list">
+            {notesPosts.map((post) => (
+            <li class="notes-item">
+                <a href={`/notes/${post.slug}`} class="notes-link">
+                    <div class="notes-content">
+                        <h2 class="notes-title">{post.data.title}</h2>
+                        <time class="notes-date" datetime={post.data.publishDate.toISOString()}>
                             {new Date(post.data.publishDate).toLocaleDateString('en-US', {
                                 year: 'numeric',
                                 month: 'long',
                                 day: 'numeric'
                             })}
                         </time>
-                        <p class="musings-description">{post.data.description}</p>
+                        <p class="notes-description">{post.data.description}</p>
                         <span class="read-more">Continue reading <span class="arrow">→</span></span>
                     </div>
                 </a>
@@ -85,7 +80,7 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         margin: 0 auto;
     }
 
-    .musings-list {
+    .notes-list {
         list-style: none;
         padding: 0;
         margin: 0;
@@ -94,12 +89,12 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         gap: 2rem;
     }
 
-    .musings-item {
+    .notes-item {
         position: relative;
         transition: transform 0.3s ease;
     }
     
-    .musings-link {
+    .notes-link {
         display: flex;
         text-decoration: none;
         color: inherit;
@@ -111,12 +106,12 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         height: 100%;
     }
 
-    .musings-link:hover {
+    .notes-link:hover {
         transform: translateY(-8px);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
     }
 
-    .musings-content {
+    .notes-content {
         flex: 1;
         padding: 2rem;
         display: flex;
@@ -125,7 +120,7 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         z-index: 2;
     }
 
-    .musings-title {
+    .notes-title {
         margin: 0 0 0.75rem;
         font-size: 1.6rem;
         color: var(--color-heading, #333);
@@ -134,11 +129,11 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         transition: color 0.3s ease;
     }
 
-    .musings-link:hover .musings-title {
+    .notes-link:hover .notes-title {
         color: var(--color-primary, #6a2fb8);
     }
 
-    .musings-date {
+    .notes-date {
         font-size: 0.9rem;
         color: var(--color-text-light, #666);
         margin-bottom: 1.25rem;
@@ -146,7 +141,7 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         font-weight: 500;
     }
 
-    .musings-description {
+    .notes-description {
         margin: 0 0 1.75rem;
         line-height: 1.7;
         color: var(--color-text, #444);
@@ -169,12 +164,12 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
         transition: transform 0.3s ease;
     }
 
-    .musings-link:hover .read-more .arrow {
+    .notes-link:hover .read-more .arrow {
         transform: translateX(6px);
     }
 
     @media (min-width: 768px) {
-        .musings-list {
+        .notes-list {
             grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
         }
     }
@@ -184,12 +179,12 @@ musingsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.
             font-size: 2rem;
         }
         
-        .musings-link {
+        .notes-link {
             flex-direction: column;
         }
         
-        .musings-content {
+        .notes-content {
             padding: 1.5rem;
         }
     }
-</style>
+</style> 

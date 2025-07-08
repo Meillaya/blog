@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { processMarkdown, extractFootnotes } from '../../utils/documentProcessor';
+import remarkSidenotes from '../../scripts/remark-sidenotes';
+import { FootnoteContainer } from '../../components/Footnotes/FootnoteContainer';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'notes'>;
+}
+
+export async function getStaticPaths() {
+    const notesEntries = await getCollection('notes');
+    return notesEntries.map(entry => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props as Props;
+const { Content } = await entry.render();
+
+// Only process with custom markdown handler if not MDX
+const isMdx = entry.id.endsWith('.mdx');
+const processedContent = isMdx ? null : await processMarkdown(entry.body, remarkSidenotes);
+
+const footnotes = extractFootnotes(entry.body);
+---
+
+<Layout
+    title={entry.data.title}
+    description={entry.data.description}
+>
+    <article>
+        <h1>{entry.data.title}</h1>
+        <time datetime={entry.data.publishDate.toISOString()}>
+            {entry.data.publishDate.toDateString()}
+        </time>
+        {isMdx ? <Content /> : <div set:html={processedContent} />}
+    </article>
+    <FootnoteContainer client:load footnotes={footnotes} />
+</Layout> 

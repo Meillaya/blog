@@ -22,9 +22,9 @@ const progressReportsCollection = defineCollection({
   })
 });
 
-const musingsCollection = defineCollection({
+const essaysCollection = defineCollection({
   type: 'content',
-  // Support both .md and .mdx files in the musings collection
+  // Support both .md and .mdx files in the essays collection
   schema: ({ image }) => z.object({
     title: z.string(),
     publishDate: z.date(),
@@ -37,8 +37,23 @@ const musingsCollection = defineCollection({
   }),
 });
 
+const notesCollection = defineCollection({
+  type: 'content',
+  // Support both .md and .mdx files in the notes collection
+  schema: ({ image }) => z.object({
+    title: z.string(),
+    publishDate: z.date(),
+    description: z.string(),
+    // Support for optimized images in the frontmatter if needed
+    previewImage: z.string().optional(),
+    previewVideo: z.string().optional(),
+    // Add image support for frontmatter
+    image: image().optional(),
+  }),
+});
 
 export const collections = {
   'blog': blogCollection,
-  'musings': musingsCollection
+  'essays': essaysCollection,
+  'notes': notesCollection
 };

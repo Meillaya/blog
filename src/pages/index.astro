@@ -1,11 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
 // Use getCollection for consistency with other pages
-const blogPosts = await getCollection('blog');
-const recentPosts = blogPosts
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+const blogPosts = await getCollection('blog') as any[];
+const essaysPosts = await getCollection('essays') as any[];
+const notesPosts = await getCollection('notes') as any[];
+
+// Combine all posts
+const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts] as any[];
+const recentPosts = allPosts
+  .sort((a, b) => new globalThis.Date(b.data.publishDate).valueOf() - new globalThis.Date(a.data.publishDate).valueOf())
   .slice(0, 3);
 ---
 
@@ -18,8 +24,8 @@ const recentPosts = blogPosts
 
     <section class="intro">
       <p>
-        I work on performance optimization and systems programming, and maybe some web dev when the mood strikes.
-        This site also serves to record my attempts at documenting my thoughts on the books I read.
+        I work on performance optimization and systems programming, and maybe some web development when the mood strikes.
+        This site also serves to record my writings and thoughts on different subjects.
         <br>
         {" "}<a href="/about" class="about-link">More about me</a>.
       </p>
@@ -31,11 +37,11 @@ const recentPosts = blogPosts
       <ul class="articles-list">
         {recentPosts.map((post) => (
           <li class="article-item">
-            <a href={`/blog/${post.slug}`} class="article-link">
+            <a href={`/${post.collection}/${post.slug}`} class="article-link">
               <div class="article-content">
                 <h3 class="article-title">{post.data.title}</h3>
                 <time class="article-date" datetime={post.data.publishDate.toISOString()}>
-                  {new Date(post.data.publishDate).toLocaleDateString('en-US', {
+                  {new globalThis.Date(post.data.publishDate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
@@ -49,7 +55,7 @@ const recentPosts = blogPosts
         ))}
       </ul>
       
-      {blogPosts.length > 3 && (
+      {allPosts.length > 3 && (
         <div class="view-all">
           <a href="/archive" class="view-all-link">View all posts <span class="arrow">→</span></a>
         </div>

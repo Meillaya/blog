@@ -7,12 +7,12 @@ import { FootnoteContainer } from '../../components/Footnotes/FootnoteContainer'
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  entry: CollectionEntry<'musings'>;
+  entry: CollectionEntry<'essays'>;
 }
 
 export async function getStaticPaths() {
-    const musingsEntries = await getCollection('musings');
-    return musingsEntries.map(entry => ({
+    const essaysEntries = await getCollection('essays');
+    return essaysEntries.map(entry => ({
         params: { slug: entry.slug },
         props: { entry },
     }));

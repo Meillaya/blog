@@ -3,10 +3,11 @@ import { getCollection } from 'astro:content';
 
 export async function GET(context) {
   const blogPosts = await getCollection('blog');
-  const musingsPosts = await getCollection('musings'); // Fetch posts from 'musings' collection
+  const essaysPosts = await getCollection('essays'); // Fetch posts from 'essays' collection
+  const notesPosts = await getCollection('notes'); // Fetch posts from 'notes' collection
 
   // Combine posts from all desired collections
-  const allPosts = [...blogPosts, ...musingsPosts];
+  const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts];
 
   // Sort all posts by publication date (newest first), using 'publishDate'
   const sortedPosts = allPosts.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf());
@@ -26,7 +27,7 @@ export async function GET(context) {
       pubDate: new Date(post.data.publishDate),
       description: post.data.description,
       // Dynamically generate link based on collection
-      link: `/${post.collection}/${post.slug}/`, // Assumes URLs like /blog/slug/ or /musings/slug/
+      link: `/${post.collection}/${post.slug}/`, // Assumes URLs like /blog/slug/, /essays/slug/, or /notes/slug/
       // Optional: add custom data to your RSS feed items
       // customData: post.data.customData,
     })),
