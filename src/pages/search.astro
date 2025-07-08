@@ -54,16 +54,6 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
         </div>
       </div>
     </div>
-
-    <div class="search-tips">
-      <h3>Search Tips</h3>
-      <ul>
-        <li>Search across titles, descriptions, and content</li>
-        <li>Use keywords from any part of the posts</li>
-        <li>Results are ranked by relevance</li>
-        <li>All collections are searched simultaneously</li>
-      </ul>
-    </div>
   </div>
 </Layout>
 
@@ -115,7 +105,7 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
   :global(.main-search .search-input-wrapper) {
     border: 2px solid #e1e5e9;
     border-radius: 12px;
-    background: white;
+    background: var(--color-card-bg, #FFF1E7);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
   }
@@ -136,6 +126,15 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
     border-radius: 0 10px 10px 0;
     min-width: 60px;
   }
+  
+  :global(.main-search .search-button svg) {
+    display: none;
+  }
+
+  :global(.main-search .search-button)::after {
+    content: 'Search';
+    font-weight: 600;
+  }
 
   :global(.main-search .search-results) {
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -143,6 +142,7 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
     margin-top: 1rem;
     max-height: 500px;
+    background: var(--color-card-bg, #FFF1E7);
   }
 
   .search-stats {
@@ -162,10 +162,11 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
   .stat-item {
     text-align: center;
     padding: 1rem;
-    background: white;
+    background: var(--color-card-bg, #FFF1E7);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.1);
   }
 
   .stat-item:hover {
@@ -189,62 +190,6 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
     font-weight: 500;
   }
 
-  .search-tips {
-    background: var(--color-card-bg, #FFF1E7);
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  }
-
-  .search-tips h3 {
-    font-size: 1.5rem;
-    color: var(--color-heading, #333);
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 0.5rem;
-  }
-
-  .search-tips h3::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--color-primary, #6a2fb8);
-    border-radius: 3px;
-  }
-
-  .search-tips ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .search-tips li {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    color: var(--color-text, #444);
-    font-size: 1.05rem;
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .search-tips li:last-child {
-    border-bottom: none;
-  }
-
-  .search-tips li::before {
-    content: "→";
-    position: absolute;
-    left: 0;
-    color: var(--color-primary, #6a2fb8);
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-
   @media (max-width: 768px) {
     .search-header h1 {
       font-size: 2rem;
@@ -266,14 +211,6 @@ searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - ne
 
     .stat-number {
       font-size: 1.5rem;
-    }
-
-    .search-tips {
-      padding: 1.5rem;
-    }
-
-    .search-tips li {
-      font-size: 1rem;
     }
 
     :global(.main-search .search-input) {

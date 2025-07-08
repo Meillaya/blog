@@ -11,8 +11,8 @@ const notesPosts = await getCollection('notes');
 const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts];
 
 // Count tags
-const tagCounts = new Map<string, number>();
-const tagPosts = new Map<string, any[]>();
+const tagCounts = new globalThis.Map<string, number>();
+const tagPosts = new globalThis.Map<string, any[]>();
 
 allPosts.forEach(post => {
   const postTags = post.data.tags || [];
@@ -26,7 +26,7 @@ allPosts.forEach(post => {
 });
 
 // Sort tags by count (descending) and then alphabetically
-const sortedTags = Array.from(tagCounts.entries())
+const sortedTags = globalThis.Array.from(tagCounts.entries())
   .sort(([a, countA], [b, countB]) => {
     if (countA !== countB) {
       return countB - countA;
@@ -52,9 +52,9 @@ const totalTags = sortedTags.length;
     <div class="tags-cloud">
       {sortedTags.map(([tag, count]) => (
         <a 
-          href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+          href={`/tags/${globalThis.encodeURIComponent(tag.toLowerCase())}`}
           class="tag-item"
-          style={`font-size: ${Math.min(2, 1 + count * 0.2)}rem;`}
+          style={`font-size: ${globalThis.Math.min(2, 1 + count * 0.2)}rem;`}
         >
           <span class="tag-name">{tag}</span>
           <span class="tag-count">{count}</span>
@@ -67,7 +67,7 @@ const totalTags = sortedTags.length;
       <div class="tags-grid">
         {sortedTags.map(([tag, count]) => (
           <div class="tag-card">
-            <a href={`/tags/${encodeURIComponent(tag.toLowerCase())}`} class="tag-link">
+            <a href={`/tags/${globalThis.encodeURIComponent(tag.toLowerCase())}`} class="tag-link">
               <h3>{tag}</h3>
               <p>{count} post{count !== 1 ? 's' : ''}</p>
                              <div class="tag-collections">
@@ -137,12 +137,12 @@ const totalTags = sortedTags.length;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: white;
+    background: var(--color-card-bg, #FFF1E7);
     border-radius: 25px;
     text-decoration: none;
     color: var(--color-text, #333);
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border: 1px solid rgba(0,0,0,0.1);
     font-weight: 500;
   }
 
@@ -196,7 +196,7 @@ const totalTags = sortedTags.length;
   }
 
   .tag-card {
-    background: white;
+    background: var(--color-card-bg, #FFF1E7);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
