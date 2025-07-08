@@ -91,7 +91,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         <div className="burger-content">
           {/* Quick Actions */}
           <div className="menu-section">
-            <h3>Quick Actions</h3>
+            <h3>QUICK ACTIONS</h3>
             <button 
               className={`menu-item ${showSearch ? 'active' : ''}`}
               onClick={() => handleMenuItemClick('search')}
@@ -131,7 +131,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           {/* Tags Section */}
           {showTags && (
             <div className="menu-section tags-section">
-              <h3>Popular Tags</h3>
+              <h3>POPULAR TAGS</h3>
               <div className="tags-grid">
                 {tags.slice(0, 12).map(tag => (
                   <a 
@@ -156,7 +156,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
 
           {/* Navigation Links */}
           <div className="menu-section">
-            <h3>Navigation</h3>
+            <h3>NAVIGATION</h3>
             <div className="nav-links">
               <a href="/essays" onClick={() => setIsOpen(false)}>Essays</a>
               <a href="/notes" onClick={() => setIsOpen(false)}>Notes</a>
@@ -170,8 +170,8 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
       <style jsx>{`
         .burger-button {
           position: relative;
-          width: 44px;
-          height: 44px;
+          width: 40px;
+          height: 40px;
           background: none;
           border: none;
           cursor: pointer;
@@ -179,26 +179,28 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          gap: 4px;
+          gap: 3px;
           transition: all 0.3s ease;
           z-index: 1001;
+          border-radius: 8px;
+          padding: 8px;
         }
 
         .burger-button:hover {
-          transform: scale(1.1);
+          background: rgba(106, 47, 184, 0.1);
         }
 
         .burger-line {
-          width: 24px;
-          height: 3px;
+          width: 20px;
+          height: 2px;
           background: var(--color-text, #333);
-          border-radius: 3px;
+          border-radius: 2px;
           transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           transform-origin: center;
         }
 
         .burger-button.open .burger-line:nth-child(1) {
-          transform: rotate(45deg) translate(5px, 5px);
+          transform: rotate(45deg) translate(4px, 4px);
         }
 
         .burger-button.open .burger-line:nth-child(2) {
@@ -207,7 +209,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         }
 
         .burger-button.open .burger-line:nth-child(3) {
-          transform: rotate(-45deg) translate(7px, -6px);
+          transform: rotate(-45deg) translate(5px, -5px);
         }
 
         .burger-overlay {
@@ -216,9 +218,9 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           left: 0;
           width: 100vw;
           height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          backdrop-filter: blur(5px);
-          z-index: 999;
+          background: rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(4px);
+          z-index: 998;
           animation: fadeIn 0.3s ease-out;
         }
 
@@ -230,14 +232,16 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         .burger-menu {
           position: fixed;
           top: 0;
-          right: -400px;
-          width: 400px;
+          right: -100%;
+          width: min(380px, 100vw);
           height: 100vh;
           background: white;
-          box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+          box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
           transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          z-index: 1000;
+          z-index: 999;
           overflow-y: auto;
+          display: flex;
+          flex-direction: column;
         }
 
         .burger-menu.open {
@@ -248,54 +252,63 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1.5rem 2rem;
-          border-bottom: 1px solid #e1e5e9;
+          padding: 1.5rem;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
           background: var(--color-card-bg, #FFF1E7);
+          flex-shrink: 0;
         }
 
         .burger-header h2 {
           margin: 0;
           font-size: 1.5rem;
           color: var(--color-heading, #333);
-          font-weight: 700;
+          font-weight: 600;
         }
 
         .close-button {
           background: none;
           border: none;
-          font-size: 2rem;
+          font-size: 1.8rem;
           cursor: pointer;
           color: var(--color-text, #333);
           transition: all 0.3s ease;
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 36px;
           display: flex;
           align-items: center;
           justify-content: center;
           border-radius: 50%;
+          line-height: 1;
         }
 
         .close-button:hover {
-          background: rgba(0, 0, 0, 0.1);
-          transform: scale(1.1);
+          background: rgba(106, 47, 184, 0.1);
+          color: var(--color-primary, #6a2fb8);
         }
 
         .burger-content {
-          padding: 1rem 0;
+          padding: 0;
+          flex: 1;
+          overflow-y: auto;
         }
 
         .menu-section {
-          margin-bottom: 2rem;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 1.5rem 0;
+        }
+
+        .menu-section:last-child {
+          border-bottom: none;
         }
 
         .menu-section h3 {
           margin: 0 0 1rem;
-          padding: 0 2rem;
-          font-size: 1.1rem;
+          padding: 0 1.5rem;
+          font-size: 0.75rem;
           color: var(--color-text-light, #666);
           font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 1px;
         }
 
         .menu-item {
@@ -303,7 +316,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           display: flex;
           align-items: center;
           gap: 1rem;
-          padding: 1rem 2rem;
+          padding: 0.75rem 1.5rem;
           background: none;
           border: none;
           cursor: pointer;
@@ -311,11 +324,13 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           color: var(--color-text, #333);
           transition: all 0.3s ease;
           text-align: left;
+          margin-bottom: 0.5rem;
+          border-radius: 0;
         }
 
         .menu-item:hover {
           background: var(--color-card-bg, #FFF1E7);
-          padding-left: 2.5rem;
+          color: var(--color-primary, #6a2fb8);
         }
 
         .menu-item.active {
@@ -325,6 +340,12 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
 
         .menu-item svg {
           flex-shrink: 0;
+          opacity: 0.7;
+        }
+
+        .menu-item:hover svg,
+        .menu-item.active svg {
+          opacity: 1;
         }
 
         .arrow {
@@ -334,11 +355,13 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         }
 
         .search-section {
-          padding: 0 2rem;
+          padding: 1rem 1.5rem;
+          background: #f8f9fa;
         }
 
         .tags-section {
-          padding: 0 2rem;
+          padding: 1rem 1.5rem;
+          background: #f8f9fa;
         }
 
         .tags-grid {
@@ -349,20 +372,22 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         }
 
         .tag-link {
-          background: var(--color-card-bg, #FFF1E7);
-          padding: 0.5rem 1rem;
+          background: white;
+          padding: 0.5rem 0.75rem;
           border-radius: 6px;
           text-decoration: none;
           color: var(--color-text, #333);
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           transition: all 0.3s ease;
           text-align: center;
+          border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .tag-link:hover {
           background: var(--color-primary, #6a2fb8);
           color: white;
           transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(106, 47, 184, 0.2);
         }
 
         .view-all-tags {
@@ -370,62 +395,81 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           color: var(--color-primary, #6a2fb8);
           text-decoration: none;
           font-weight: 600;
+          font-size: 0.9rem;
           transition: all 0.3s ease;
         }
 
         .view-all-tags:hover {
-          transform: translateX(5px);
+          transform: translateX(4px);
         }
 
         .nav-links {
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0;
         }
 
         .nav-links a {
           display: block;
-          padding: 0.75rem 2rem;
+          padding: 0.75rem 1.5rem;
           text-decoration: none;
           color: var(--color-text, #333);
           font-weight: 500;
           transition: all 0.3s ease;
+          border-radius: 0;
         }
 
         .nav-links a:hover {
           background: var(--color-card-bg, #FFF1E7);
           color: var(--color-primary, #6a2fb8);
-          padding-left: 2.5rem;
         }
 
         /* Search component overrides */
         :global(.burger-search .search-results) {
           position: static;
-          max-height: 300px;
-          margin-top: 1rem;
-          border: 1px solid #e1e5e9;
+          max-height: 250px;
+          margin-top: 0.5rem;
+          border: 1px solid rgba(0, 0, 0, 0.1);
           border-radius: 8px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         :global(.burger-search .search-input-wrapper) {
-          border: 1px solid #e1e5e9;
+          border: 1px solid rgba(0, 0, 0, 0.2);
           border-radius: 8px;
+          background: white;
         }
 
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
+        :global(.burger-search .search-input) {
+          font-size: 0.9rem;
+          padding: 0.6rem 0.75rem;
+        }
+
+        :global(.burger-search .search-button) {
+          padding: 0.6rem;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
           .burger-menu {
             width: 100vw;
             right: -100vw;
           }
           
-          .burger-menu.open {
-            right: 0;
+          .burger-header {
+            padding: 1rem;
           }
-
+          
           .tags-grid {
             grid-template-columns: 1fr;
+          }
+          
+          .menu-item {
+            padding: 1rem;
+          }
+          
+          .nav-links a {
+            padding: 1rem;
           }
         }
       `}</style>

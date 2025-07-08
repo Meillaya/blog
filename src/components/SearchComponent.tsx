@@ -16,12 +16,14 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const searchEngine = useMemo(() => new SearchEngine(posts), [posts]);
 
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
+      setShowResults(false);
       return;
     }
 
@@ -29,8 +31,9 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     const timeoutId = setTimeout(() => {
       const searchResults = searchEngine.search(query);
       setResults(searchResults);
+      setShowResults(true);
       setIsLoading(false);
-    }, 200);
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [query, searchEngine]);
@@ -40,6 +43,25 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     if (results.length > 0) {
       window.location.href = results[0].item.url;
     }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    if (query && results.length > 0) {
+      setShowResults(true);
+    }
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setIsFocused(false);
+      setShowResults(false);
+    }, 200);
+  };
+
+  const handleResultClick = (url: string) => {
+    setShowResults(false);
+    window.location.href = url;
   };
 
   const highlightMatch = (text: string, matches?: any[]) => {
@@ -70,13 +92,14 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             placeholder={placeholder}
             className="search-input"
+            autoComplete="off"
           />
-          <button type="submit" className="search-button">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <button type="submit" className="search-button" disabled={!query.trim()}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8"/>
               <path d="m21 21-4.35-4.35"/>
             </svg>
@@ -84,22 +107,29 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
         </div>
       </form>
 
-      {(isFocused || query) && (
+      {showResults && (
         <div className="search-results">
           {isLoading ? (
-            <div className="search-loading">Searching...</div>
+            <div className="search-loading">
+              <div className="loading-spinner"></div>
+              <span>Searching...</span>
+            </div>
           ) : query && results.length === 0 ? (
-            <div className="search-no-results">No results found for "{query}"</div>
+            <div className="search-no-results">
+              <div className="no-results-icon">🔍</div>
+              <p>No results found for <strong>"{query}"</strong></p>
+              <small>Try different keywords or check your spelling</small>
+            </div>
           ) : (
             <div className="search-results-list">
-              {results.slice(0, 10).map((result, index) => (
-                <a 
+              {results.slice(0, 8).map((result, index) => (
+                <div 
                   key={result.item.id} 
-                  href={result.item.url}
                   className="search-result-item"
+                  onClick={() => handleResultClick(result.item.url)}
                 >
                   <div className="search-result-content">
-                    <h3 
+                    <h4 
                       className="search-result-title"
                       dangerouslySetInnerHTML={{ 
                         __html: highlightMatch(result.item.title, result.matches) 
@@ -114,23 +144,32 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
                     <div className="search-result-meta">
                       <span className="search-result-collection">{result.item.collection}</span>
                       <span className="search-result-date">
-                        {new Date(result.item.publishDate).toLocaleDateString()}
+                        {new Date(result.item.publishDate).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
                       </span>
                       {result.item.tags.length > 0 && (
                         <div className="search-result-tags">
-                          {result.item.tags.slice(0, 3).map(tag => (
+                          {result.item.tags.slice(0, 2).map(tag => (
                             <span key={tag} className="search-result-tag">{tag}</span>
                           ))}
+                          {result.item.tags.length > 2 && (
+                            <span className="search-result-tag more">+{result.item.tags.length - 2}</span>
+                          )}
                         </div>
                       )}
                     </div>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           )}
         </div>
       )}
+
+
     </div>
   );
 }; 
