@@ -3,6 +3,7 @@ interface Props {
   title: string;
   description?: string;
 }
+import type { CollectionEntry } from 'astro:content';
 import Footer from '../components/Footer.astro';
 import { BurgerMenu } from '../components/BurgerMenu';
 import { getCollection } from 'astro:content';
@@ -17,11 +18,11 @@ const essaysPosts = await getCollection('essays');
 const notesPosts = await getCollection('notes');
 
 // Create searchable posts
-const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts];
+const allPosts: (CollectionEntry<'blog'> | CollectionEntry<'essays'> | CollectionEntry<'notes'>)[] = [...blogPosts, ...essaysPosts, ...notesPosts];
 const searchablePosts = allPosts.map(post => createSearchablePost(post));
 
 // Get all tags
-const allTags = new Set();
+const allTags = new Set<string>();
 allPosts.forEach(post => {
   const tags = post.data.tags || [];
   tags.forEach(tag => allTags.add(tag));
@@ -105,10 +106,10 @@ const tagsArray = Array.from(allTags).sort();
 
   .main-nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     position: relative;
     width: 100%;
+    gap: 2rem;
   }
 
   .site-title {
@@ -128,6 +129,7 @@ const tagsArray = Array.from(allTags).sort();
     display: flex;
     align-items: center;
     gap: 2rem;
+    margin-left: auto;
   }
 
   .nav-links {
