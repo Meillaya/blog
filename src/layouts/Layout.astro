@@ -142,8 +142,10 @@ const tagsArray = Array.from(allTags).sort();
 
   .nav-links {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 2rem;
+    flex-wrap: nowrap;
   }
   
   .nav-links a {
@@ -200,7 +202,10 @@ const tagsArray = Array.from(allTags).sort();
     }
 
     .nav-links {
+      display: flex;
+      flex-direction: row;
       gap: 1rem;
+      align-items: center;
     }
 
     .nav-links a {
@@ -216,21 +221,25 @@ const tagsArray = Array.from(allTags).sort();
     }
   }
 
-  /* Very small screens - stack navigation */
+  /* Very small screens - maintain horizontal nav */
   @media (max-width: 480px) {
     .main-nav {
       flex-direction: column;
       gap: 1rem;
-      align-items: stretch;
+      align-items: center;
     }
 
     .nav-content {
-      justify-content: space-between;
+      justify-content: center;
       width: 100%;
+      gap: 1.5rem;
     }
 
     .nav-links {
+      display: flex;
+      flex-direction: row;
       gap: 0.75rem;
+      align-items: center;
     }
 
     .nav-links a {
