@@ -46,7 +46,7 @@ const { posts, tags } = Astro.props;
         margin: 0 auto;
         padding: 1rem 2rem; /* Added vertical padding */
         border-bottom: 1px solid rgba(0,0,0,0.08);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Enhanced shadow */
     }
 
     .site-title {
@@ -65,14 +65,14 @@ const { posts, tags } = Astro.props;
     .nav-content {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        gap: 1.5rem; /* Adjust gap for nav-content */
     }
 
     .nav-links {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 2rem;
+        gap: 1rem; /* Closer spacing for nav links */
         flex-wrap: nowrap;
     }
     
@@ -80,7 +80,7 @@ const { posts, tags } = Astro.props;
         text-decoration: none;
         color: var(--text-color);
         font-weight: 500;
-        font-size: 1rem; /* Slightly increased font size */
+        font-size: 0.9rem; /* Smaller font size for nav links */
         letter-spacing: 0.5px;
         transition: color 0.3s ease;
         position: relative;
@@ -124,7 +124,11 @@ const { posts, tags } = Astro.props;
 
     @media (min-width: 769px) {
       .burger-menu-container {
-        display: none;
+        /* Ensure it's not hidden on desktop */
+        display: flex; /* Explicitly ensure it's flex */
+      }
+      .nav-content {
+        gap: 1.5rem; /* Ensure proper spacing with burger menu on desktop */
       }
     }
 </style> 
