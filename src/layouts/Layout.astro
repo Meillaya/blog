@@ -71,6 +71,7 @@ const tagsArray = Array.from(allTags).sort();
     color: var(--text-color);
     line-height: 1.6;
     font-size: var(--font-size-base);
+    user-select: none;
   }
 
   body {
@@ -80,6 +81,9 @@ const tagsArray = Array.from(allTags).sort();
   }
 
   /* REMOVED HEADER AND NAV STYLES */
+  .search-input, .article-content, pre, code {
+    user-select: auto;
+  }
 
   /* General link styles */
   a {
