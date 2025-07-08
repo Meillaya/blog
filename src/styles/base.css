@@ -6,10 +6,15 @@
   --line-height-base: 1.7;
   
   /* Colors */
-  --color-text: #1a1a1a;
-  --color-background: #ffffff;
-  --color-primary: #8b0000;
+  --text-color: #000000;
+  --link-color: #6a2fb8;
+  --background: #FFF1E7;
+  --color-primary: #6a2fb8;
   --color-secondary: #666666;
+  --color-heading: #333;
+  --color-text: #444;
+  --color-text-light: #666;
+  --color-card-bg: #FFF1E7;
   --color-border: #e5e5e5;
   
   /* Spacing */
@@ -26,7 +31,7 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   color: var(--color-text);
-  background: var(--color-background);
+  background: var(--background);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
