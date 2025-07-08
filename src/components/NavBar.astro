@@ -46,15 +46,8 @@ const { posts, tags } = Astro.props;
 
     .site-title {
         font-size: 1.5rem;
-        font-weight: 600;
         text-decoration: none;
         color: var(--text-color);
-        transition: color 0.3s ease;
-        flex-shrink: 0;
-    }
-
-    .site-title:hover {
-        color: var(--color-primary);
     }
 
     .nav-content {
@@ -67,38 +60,13 @@ const { posts, tags } = Astro.props;
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 0.5rem;
+        gap: 2rem;
         flex-wrap: nowrap;
     }
     
     .nav-links a {
         text-decoration: none;
         color: var(--text-color);
-        font-weight: 500;
-        font-size: 0.9rem;
-        letter-spacing: 0.5px;
-        transition: color 0.3s ease;
-        position: relative;
-        white-space: nowrap;
-    }
-
-    .nav-links a::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--color-primary);
-        transition: width 0.3s ease;
-    }
-
-    .nav-links a:hover {
-        color: var(--color-primary);
-    }
-
-    .nav-links a:hover::after {
-        width: 100%;
     }
 
     .burger-menu-container {
