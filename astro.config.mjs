@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import react from "@astrojs/react";
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://meillaya.com',
@@ -14,7 +15,8 @@ export default defineConfig({
       // Ensure .mdx files can use layouts and other features
       recmaPlugins: [],
     }), 
-    react()
+    react(),
+    sitemap()
   ],
   markdown: {
     syntaxHighlight: 'shiki',
@@ -27,16 +29,6 @@ export default defineConfig({
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
-    },
-  },
-  vite: {
-    build: {
-      rollupOptions: {
-        input: {
-          main: 'src/scripts/*',
-          // Add other script entry points as needed
-        },
-      },
     },
   },
 });

@@ -1,8 +1,17 @@
 {
-  "name": "@example/basics",
+  "name": "meillaya's blog",
+  "description": "Blog to record my thoughts and proijects",
   "type": "module",
   "version": "0.0.1",
   "private": true,
+  "author": "meillaya",
+  "license": "UNLICENSED",
+  "homepage": "https://meillaya.com",
+  "keywords": [
+    "astro",
+    "blog",
+    "portfolio"
+  ],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,8 +20,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.0.3",
+    "@astrojs/mdx": "^4.3.0",
     "@astrojs/react": "^4.1.2",
+    "@astrojs/sitemap": "^3.4.1",
     "@astrojs/rss": "^4.0.12",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
@@ -32,7 +42,6 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
-    "sharp": "^0.33.5",
     "shiki": "^1.24.4",
     "shiki-languages": "^0.2.7",
     "shiki-themes": "^0.2.7",

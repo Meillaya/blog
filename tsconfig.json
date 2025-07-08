@@ -1,12 +1,8 @@
 {
-  "extends": "astro/tsconfigs/base",
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "lib": ["ESNext", "DOM"]
+    "strictNullChecks": true
   }
 }
