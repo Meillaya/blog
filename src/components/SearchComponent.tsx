@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { SearchEngine, type SearchablePost, type SearchResult } from '../utils/search';
+import { SearchEngine } from '../utils/search';
+import type { SearchablePost, SearchResult } from '../utils/search';
 import type { FuseResultMatch } from 'fuse.js';
+
+// Add type declaration for Vercel Analytics
+declare global {
+  interface Window {
+    va?: (event: string, data?: Record<string, any>) => void;
+  }
+}
 
 interface SearchComponentProps {
   posts: SearchablePost[];
@@ -34,6 +42,11 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
       setResults(searchResults);
       setShowResults(true);
       setIsLoading(false);
+      
+      // Track search query
+      if (typeof window !== 'undefined' && window.va) {
+        window.va('event', { name: 'search', query: query, results: searchResults.length });
+      }
     }, 300);
 
     return () => clearTimeout(timeoutId);
@@ -42,6 +55,15 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (results.length > 0) {
+      // Track search result click
+      if (typeof window !== 'undefined' && window.va) {
+        window.va('event', { 
+          name: 'Search Result Click',
+          query: query, 
+          result: results[0].item.title,
+          position: 1 
+        });
+      }
       window.location.href = results[0].item.url;
     }
   };
@@ -60,14 +82,36 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     }, 200);
   };
 
-  const handleResultClick = (url: string) => {
+  const handleResultClick = (url: string, result: SearchResult, index: number) => {
     setShowResults(false);
+    
+    // Track search result click
+    if (typeof window !== 'undefined' && window.va) {
+      window.va('event', { 
+        name: 'Search Result Click',
+        query: query, 
+        result: result.item.title,
+        position: index + 1 
+      });
+    }
+    
     window.location.href = url;
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && results.length > 0) {
       e.preventDefault();
+      
+      // Track search result click
+      if (typeof window !== 'undefined' && window.va) {
+        window.va('event', { 
+          name: 'Search Result Click',
+          query: query, 
+          result: results[0].item.title,
+          position: 1 
+        });
+      }
+      
       window.location.href = results[0].item.url;
     }
   };
@@ -168,11 +212,11 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
             </div>
           ) : (
             <div className="search-results-list">
-              {results.slice(0, 8).map((result) => (
+              {results.slice(0, 8).map((result, index) => (
                 <div 
                   key={result.item.id} 
                   className="search-result-item"
-                  onClick={() => handleResultClick(result.item.url)}
+                  onClick={() => handleResultClick(result.item.url, result, index)}
                 >
                   <div className="search-result-content">
                     <h4 
