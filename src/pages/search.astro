@@ -12,7 +12,7 @@ const notesPosts = await getCollection('notes');
 
 // Create searchable posts
 const allPosts = [...blogPosts, ...essaysPosts, ...notesPosts];
-const searchablePosts = allPosts.map(post => createSearchablePost(post));
+const searchablePosts = allPosts.map(post => createSearchablePost(post, post.body));
 
 // Sort by date (newest first)
 searchablePosts.sort((a, b) => new globalThis.Date(b.publishDate).getTime() - new globalThis.Date(a.publishDate).getTime());

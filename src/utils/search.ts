@@ -1,4 +1,4 @@
-import MiniSearch from 'minisearch';
+import Fuse, { type FuseResult } from 'fuse.js';
 import type { CollectionEntry } from 'astro:content';
 
 export interface SearchablePost {
@@ -13,68 +13,35 @@ export interface SearchablePost {
   url: string;
 }
 
-export interface SearchResult {
-  item: SearchablePost;
-  score?: number;
-  matches?: { key: string; value: any }[];
-}
+export type SearchResult = FuseResult<SearchablePost>;
 
 export class SearchEngine {
-  private miniSearch: MiniSearch<SearchablePost>;
+  private fuse: Fuse<SearchablePost>;
   private posts: SearchablePost[];
 
   constructor(posts: SearchablePost[]) {
     this.posts = posts;
     
-    this.miniSearch = new MiniSearch({
-      fields: ['title', 'description', 'content', 'tags'],
-      storeFields: ['id', 'title', 'description', 'content', 'publishDate', 'tags', 'collection', 'slug', 'url'],
-      searchOptions: {
-        boost: { 
-          title: 3,
-          tags: 2,
-          description: 1.5,
-          content: 1
-        },
-        fuzzy: 0.2,
-        prefix: true,
-        combineWith: 'AND'
-      },
-      extractField: (document: SearchablePost, fieldName: string) => {
-        if (fieldName === 'tags') {
-          return document.tags.join(' ');
-        }
-        return (document as any)[fieldName];
-      }
+    this.fuse = new Fuse(posts, {
+      keys: [
+        { name: 'title', weight: 3 },
+        { name: 'tags', weight: 2 },
+        { name: 'description', weight: 1.5 },
+        { name: 'content', weight: 1 }
+      ],
+      includeScore: true,
+      includeMatches: true,
+      minMatchCharLength: 2,
+      threshold: 0.3,
+      ignoreLocation: true,
     });
-
-    this.miniSearch.addAll(posts);
   }
 
   search(query: string): SearchResult[] {
-    if (!query || query.length < 2) {
+    if (!query || query.trim().length < 2) {
       return [];
     }
-
-    const results = this.miniSearch.search(query, {
-      boost: { 
-        title: 3,
-        tags: 2,
-        description: 1.5,
-        content: 1
-      },
-      fuzzy: 0.2,
-      prefix: true
-    });
-
-    return results.map((result: any) => ({
-      item: result as SearchablePost,
-      score: result.score,
-      matches: result.match ? Object.entries(result.match).map(([field, terms]) => ({
-        key: field,
-        value: terms
-      })) : []
-    }));
+    return this.fuse.search(query);
   }
 
   searchByTag(tag: string): SearchablePost[] {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { SearchEngine, type SearchablePost, type SearchResult } from '../utils/search';
+import type { FuseResultMatch } from 'fuse.js';
 
 interface SearchComponentProps {
   posts: SearchablePost[];
@@ -71,37 +72,49 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     }
   };
 
-  const highlightMatch = (text: string, matches?: { key: string; value: string[] }[]) => {
-    if (!text || !matches || matches.length === 0) {
+  const highlightMatch = (text: string, key: string, allMatches?: readonly FuseResultMatch[]) => {
+    if (!text || !allMatches) {
       return text;
     }
 
-    // Collect unique, non-empty terms from matches
-    const terms: string[] = [];
-    matches.forEach(match => {
-      if (Array.isArray(match.value)) {
-        match.value.forEach(term => {
-          if (term && term.length > 0 && !terms.includes(term)) {
-            terms.push(term);
-          }
-        });
+    const keyMatches = allMatches.filter(m => m.key === key);
+    if (!keyMatches.length) {
+      return text;
+    }
+
+    const indices = keyMatches.flatMap(m => m.indices);
+
+    if (indices.length === 0) return text;
+
+    // Sort and merge overlapping/adjacent intervals
+    indices.sort((a, b) => a[0] - b[0]);
+
+    const mergedIndices: [number, number][] = [];
+    if (indices.length > 0) {
+      let current = [...indices[0]]; // Make a copy
+      for (let i = 1; i < indices.length; i++) {
+        const next = indices[i];
+        if (next[0] <= current[1] + 1) {
+          current[1] = Math.max(current[1], next[1]);
+        } else {
+          mergedIndices.push(current as [number, number]);
+          current = [...next]; // Make a copy
+        }
       }
-    });
-
-    if (terms.length === 0) return text;
-
-    // Sort terms by length (longest first) to prevent nested highlighting
-    terms.sort((a, b) => b.length - a.length);
-
-    // Escape special regex chars, inc. forward slash
-    const escapedTerms = terms.map(t => t.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'));
-
-    try {
-      const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
-      return text.replace(regex, match => `<mark class="search-highlight">${match}</mark>`);
-    } catch {
-      return text;
+      mergedIndices.push(current as [number, number]);
     }
+
+    let result = '';
+    let lastIndex = 0;
+    mergedIndices.forEach(([start, end]) => {
+      const endInclusive = end + 1;
+      result += text.substring(lastIndex, start);
+      result += `<mark class="search-highlight">${text.substring(start, endInclusive)}</mark>`;
+      lastIndex = endInclusive;
+    });
+    result += text.substring(lastIndex);
+
+    return result;
   };
 
   return (
@@ -165,13 +178,13 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
                     <h4 
                       className="search-result-title"
                       dangerouslySetInnerHTML={{ 
-                        __html: highlightMatch(result.item.title, result.matches) 
+                        __html: highlightMatch(result.item.title, 'title', result.matches) 
                       }}
                     />
                     <p 
                       className="search-result-description"
                       dangerouslySetInnerHTML={{ 
-                        __html: highlightMatch(result.item.description, result.matches) 
+                        __html: highlightMatch(result.item.description, 'description', result.matches) 
                       }}
                     />
                     <div className="search-result-meta">
