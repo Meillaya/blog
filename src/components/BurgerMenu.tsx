@@ -138,7 +138,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         }
 
         .burger-button:hover {
-          background: rgba(106, 47, 184, 0.1);
+          background: rgba(var(--color-primary-rgb), 0.1);
         }
 
         .burger-line {
@@ -150,17 +150,9 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           transform-origin: center;
         }
 
-        .burger-button.open .burger-line:nth-child(1) {
-          transform: rotate(45deg) translate(4px, 4px);
-        }
-
-        .burger-button.open .burger-line:nth-child(2) {
-          opacity: 0;
-          transform: translateX(-20px);
-        }
-
-        .burger-button.open .burger-line:nth-child(3) {
-          transform: rotate(-45deg) translate(5px, -5px);
+        .burger-button.open .burger-line {
+          /* Keep the burger lines as they are when menu is open */
+          background: var(--color-primary, #333);
         }
 
         .burger-overlay {
@@ -189,7 +181,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           background: white;
           box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
           transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          z-index: 999;
+          z-index: 1002;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
@@ -260,7 +252,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
 
         .menu-item:hover {
           background: var(--color-card-bg, #FFF1E7);
-          color: var(--color-primary, #6a2fb8);
+          color: var(--color-primary);
         }
 
         .menu-item svg {
@@ -300,7 +292,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
 
         .nav-links a:hover {
           background: var(--color-card-bg, #FFF1E7);
-          color: var(--color-primary, #6a2fb8);
+          color: var(--color-primary);
         }
 
         /* REMOVED: .stats-grid and .stat-item styles */

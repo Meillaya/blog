@@ -86,7 +86,7 @@ import Layout from '../layouts/Layout.astro';
     padding: 0 1.5rem; /* Consistent padding with index */
     background: var(--color-card-bg, #FFF1E7); /* Background from index */
     border-radius: 16px; /* Rounded corners from index */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Subtle shadow from index */
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); */
     padding: 2.5rem; /* More internal padding */
   }
 
@@ -106,7 +106,7 @@ import Layout from '../layouts/Layout.astro';
     left: 0;
     width: 70px; /* Longer underline */
     height: 3px; /* Thicker underline */
-    background-color: var(--color-primary, #6a2fb8); /* Primary color from index */
+    background-color: var(--color-primary); /* Primary color from index */
     border-radius: 3px;
   }
 
@@ -135,8 +135,8 @@ import Layout from '../layouts/Layout.astro';
   .skill-highlight {
     display: inline-block;
     padding: 0.6rem 1.2rem; /* Slightly larger padding */
-    background-color: rgba(106, 47, 184, 0.08); /* Primary color with low opacity */
-    border: 1px solid rgba(106, 47, 184, 0.2); /* Subtle border with primary color */
+    background-color: rgba(var(--color-primary-rgb), 0.08); /* Primary color with low opacity */
+    border: 1px solid rgba(var(--color-primary-rgb), 0.2); /* Subtle border with primary color */
     border-radius: 8px; /* More rounded */
     font-size: 1rem;
     font-weight: 500; /* Slightly bolder */
@@ -146,8 +146,8 @@ import Layout from '../layouts/Layout.astro';
 
   .skill-highlight:hover {
     transform: translateY(-3px) scale(1.03); /* Enhanced hover effect */
-    background-color: rgba(106, 47, 184, 0.12);
-    box-shadow: 0 4px 10px rgba(106, 47, 184, 0.1);
+    background-color: rgba(var(--color-primary-rgb), 0.12);
+    box-shadow: 0 4px 10px rgba(var(--color-primary-rgb), 0.1);
   }
 
   .connect-section h2 {
@@ -166,7 +166,7 @@ import Layout from '../layouts/Layout.astro';
     left: 0;
     width: 50px;
     height: 3px;
-    background: var(--color-primary, #6a2fb8);
+    background: var(--color-primary);
     border-radius: 3px;
   }
 
@@ -194,12 +194,12 @@ import Layout from '../layouts/Layout.astro';
     transform: translateY(-5px); /* Enhanced hover effect */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07); /* More prominent shadow on hover */
     background-color: #FFF1E7;
-    border-color: rgba(106, 47, 184, 0.3); /* Primary color border on hover */
+    border-color: rgba(var(--color-primary-rgb), 0.3); /* Primary color border on hover */
     color: var(--color-primary-dark, #5a1fa8); /* Text color changes to primary on hover */
   }
 
   .social-link svg {
-    color: var(--color-primary, #6a2fb8); /* SVG color from index */
+    color: var(--color-primary); /* SVG color from index */
     transition: color 0.3s ease;
   }
   .social-link:hover svg {

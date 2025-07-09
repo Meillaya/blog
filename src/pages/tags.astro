@@ -118,7 +118,7 @@ const totalTags = sortedTags.length;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-weight: 600;
-    color: var(--color-primary, #6a2fb8);
+    color: var(--color-primary);
   }
 
   .tags-cloud {
@@ -147,10 +147,10 @@ const totalTags = sortedTags.length;
   }
 
   .tag-item:hover {
-    background: var(--color-primary, #6a2fb8);
+    background: var(--color-primary);
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(106, 47, 184, 0.2);
+    box-shadow: 0 5px 15px rgba(var(--color-primary-rgb), 0.2);
   }
 
   .tag-count {
@@ -185,7 +185,7 @@ const totalTags = sortedTags.length;
     left: 0;
     width: 60px;
     height: 3px;
-    background: var(--color-primary, #6a2fb8);
+    background: var(--color-primary);
     border-radius: 3px;
   }
 
@@ -235,7 +235,7 @@ const totalTags = sortedTags.length;
   }
 
   .collection-badge {
-    background: var(--color-primary, #6a2fb8);
+    background: var(--color-primary);
     color: white;
     padding: 0.2rem 0.6rem;
     border-radius: 4px;

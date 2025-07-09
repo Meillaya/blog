@@ -26,8 +26,8 @@ const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
 ---
 
 <Layout title={title} description={description}>
-  <article class="article">
-    <header>
+  <article class="article mdx-article">
+    <header class="mdx-header">
       <h1>{title}</h1>
       <div class="article-meta">
         <time datetime={publishDate.toISOString()}>{formattedDate}</time>
@@ -41,9 +41,45 @@ const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
 </Layout>
 
 <style is:global>
+  .mdx-article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .mdx-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+
+  .mdx-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-heading, #333);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .mdx-header time {
+    color: var(--color-text-light, #666);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
   /* Styles specifically for MDX content */
+  .mdx-content {
+    user-select: auto;
+    line-height: 1.7;
+  }
+
+  .mdx-content * {
+    user-select: auto;
+  }
+
   .mdx-content figure {
     margin: 2rem 0;
+    user-select: auto;
   }
   
   .mdx-content figure img {
@@ -51,6 +87,7 @@ const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
     max-width: 100%;
     height: auto;
     margin: 0 auto;
+    user-select: auto;
   }
   
   .mdx-content figcaption {
@@ -59,6 +96,51 @@ const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
     margin-top: 0.5rem;
     font-size: 0.9rem;
     color: #666;
+    user-select: auto;
+  }
+
+  .mdx-content h1,
+  .mdx-content h2,
+  .mdx-content h3,
+  .mdx-content h4,
+  .mdx-content h5,
+  .mdx-content h6 {
+    user-select: auto;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .mdx-content p {
+    user-select: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  .mdx-content ul,
+  .mdx-content ol {
+    user-select: auto;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .mdx-content li {
+    user-select: auto;
+    margin-bottom: 0.5rem;
+  }
+
+  .mdx-content blockquote {
+    user-select: auto;
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--color-primary);
+    font-style: italic;
+  }
+
+  .mdx-content code {
+    user-select: auto;
+  }
+
+  .mdx-content pre {
+    user-select: auto;
   }
 
   /* Enhanced focus states for keyboard navigation */

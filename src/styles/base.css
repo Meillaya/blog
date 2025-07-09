@@ -7,9 +7,10 @@
   
   /* Colors */
   --text-color: #000000;
-  --link-color: #6a2fb8;
+  --link-color: #DAB1DA;
   --background: #FFF1E7;
-  --color-primary: #6a2fb8;
+  --color-primary: #DAB1DA;
+  --color-primary-rgb: 218,177,218;
   --color-secondary: #666666;
   --color-heading: #333;
   --color-text: #444;
