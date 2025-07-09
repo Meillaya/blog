@@ -71,24 +71,37 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     }
   };
 
-  const highlightMatch = (text: string, matches?: any[]) => {
-    if (!matches || matches.length === 0) return text;
-    
-    let highlightedText = text;
-    const match = matches.find(m => m.key === 'title' || m.key === 'description');
-    
-    if (match && match.indices) {
-      const indices = match.indices[0];
-      if (indices && indices.length === 2) {
-        const [start, end] = indices;
-        highlightedText = 
-          text.slice(0, start) + 
-          `<mark class="search-highlight">${text.slice(start, end + 1)}</mark>` + 
-          text.slice(end + 1);
-      }
+  const highlightMatch = (text: string, matches?: { key: string; value: string[] }[]) => {
+    if (!text || !matches || matches.length === 0) {
+      return text;
     }
-    
-    return highlightedText;
+
+    // Collect unique, non-empty terms from matches
+    const terms: string[] = [];
+    matches.forEach(match => {
+      if (Array.isArray(match.value)) {
+        match.value.forEach(term => {
+          if (term && term.length > 0 && !terms.includes(term)) {
+            terms.push(term);
+          }
+        });
+      }
+    });
+
+    if (terms.length === 0) return text;
+
+    // Sort terms by length (longest first) to prevent nested highlighting
+    terms.sort((a, b) => b.length - a.length);
+
+    // Escape special regex chars, inc. forward slash
+    const escapedTerms = terms.map(t => t.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'));
+
+    try {
+      const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+      return text.replace(regex, match => `<mark class="search-highlight">${match}</mark>`);
+    } catch {
+      return text;
+    }
   };
 
   return (
@@ -142,7 +155,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
             </div>
           ) : (
             <div className="search-results-list">
-              {results.slice(0, 8).map((result, index) => (
+              {results.slice(0, 8).map((result) => (
                 <div 
                   key={result.item.id} 
                   className="search-result-item"
@@ -189,7 +202,6 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
         </div>
       )}
 
-
     </div>
   );
-}; 
+};

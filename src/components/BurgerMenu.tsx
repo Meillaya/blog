@@ -8,6 +8,7 @@ interface BurgerMenuProps {
 
 export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -18,13 +19,13 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
       if (isOpen && menu && button && 
           !menu.contains(event.target as Node) && 
           !button.contains(event.target as Node)) {
-        setIsOpen(false);
+        closeMenu();
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen]);
+  }, [isOpen, isClosing]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -40,11 +41,23 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
   }, [isOpen]);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    if (isOpen) {
+      closeMenu();
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  const closeMenu = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 200); // Match the closing animation duration
   };
 
   const handleLinkClick = () => {
-    setIsOpen(false);
+    closeMenu();
   };
 
   return (
@@ -62,13 +75,22 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
       </button>
 
       {/* Overlay */}
-      {isOpen && <div className="burger-overlay" />}
+      {isOpen && <div className={`burger-overlay ${isClosing ? 'closing' : ''}`} />}
 
       {/* Menu */}
-      <div id="burger-menu" className={`burger-menu ${isOpen ? 'open' : ''}`}>
+      <div id="burger-menu" className={`burger-menu ${isOpen ? 'open' : ''} ${isClosing ? 'closing' : ''}`}>
         <div className="burger-header">
           <h2>Explore</h2>
-          {/* REMOVED: Close button */}
+          <button 
+            className="close-button"
+            onClick={handleLinkClick}
+            aria-label="Close menu"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
         <div className="burger-content">
@@ -164,12 +186,13 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           background: rgba(0, 0, 0, 0.3);
           backdrop-filter: blur(4px);
           z-index: 998;
-          animation: fadeIn 0.3s ease-out;
+          opacity: 1;
+          transition: opacity 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        .burger-overlay.closing {
+          opacity: 0;
+          transition: opacity 0.2s cubic-bezier(0.4, 0.0, 1, 1);
         }
 
         .burger-menu {
@@ -180,13 +203,17 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           height: 100vh;
           background: white;
           box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
-          transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: right 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
           z-index: 1002;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
           border-top-left-radius: 16px;
           border-bottom-left-radius: 16px;
+        }
+
+        .burger-menu.closing {
+          transition: right 0.2s cubic-bezier(0.4, 0.0, 1, 1);
         }
 
         .burger-menu.open {
@@ -210,7 +237,37 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
           font-weight: 600;
         }
 
-        /* REMOVED: .close-button styles */
+        .close-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 8px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--color-text, #333);
+          transition: all 0.3s ease;
+          opacity: 0.7;
+        }
+
+        .close-button:hover {
+          background: rgba(var(--color-primary-rgb), 0.1);
+          opacity: 1;
+          transform: scale(1.1);
+        }
+
+        .close-button:active {
+          transform: scale(0.95);
+        }
+
+        .close-button svg {
+          transition: transform 0.3s ease;
+        }
+
+        .close-button:hover svg {
+          transform: rotate(90deg);
+        }
 
         .burger-content {
           padding: 0;

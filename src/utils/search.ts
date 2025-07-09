@@ -1,4 +1,4 @@
-import Fuse from 'fuse.js';
+import MiniSearch from 'minisearch';
 import type { CollectionEntry } from 'astro:content';
 
 export interface SearchablePost {
@@ -16,29 +16,39 @@ export interface SearchablePost {
 export interface SearchResult {
   item: SearchablePost;
   score?: number;
-  matches?: Fuse.FuseResultMatch[];
+  matches?: { key: string; value: any }[];
 }
 
 export class SearchEngine {
-  private fuse: Fuse<SearchablePost>;
+  private miniSearch: MiniSearch<SearchablePost>;
+  private posts: SearchablePost[];
 
   constructor(posts: SearchablePost[]) {
-    const options: Fuse.IFuseOptions<SearchablePost> = {
-      keys: [
-        { name: 'title', weight: 0.3 },
-        { name: 'description', weight: 0.2 },
-        { name: 'content', weight: 0.2 },
-        { name: 'tags', weight: 0.3 }
-      ],
-      threshold: 0.4,
-      includeScore: true,
-      includeMatches: true,
-      minMatchCharLength: 2,
-      ignoreLocation: true,
-      useExtendedSearch: true
-    };
+    this.posts = posts;
+    
+    this.miniSearch = new MiniSearch({
+      fields: ['title', 'description', 'content', 'tags'],
+      storeFields: ['id', 'title', 'description', 'content', 'publishDate', 'tags', 'collection', 'slug', 'url'],
+      searchOptions: {
+        boost: { 
+          title: 3,
+          tags: 2,
+          description: 1.5,
+          content: 1
+        },
+        fuzzy: 0.2,
+        prefix: true,
+        combineWith: 'AND'
+      },
+      extractField: (document: SearchablePost, fieldName: string) => {
+        if (fieldName === 'tags') {
+          return document.tags.join(' ');
+        }
+        return (document as any)[fieldName];
+      }
+    });
 
-    this.fuse = new Fuse(posts, options);
+    this.miniSearch.addAll(posts);
   }
 
   search(query: string): SearchResult[] {
@@ -46,23 +56,36 @@ export class SearchEngine {
       return [];
     }
 
-    const results = this.fuse.search(query);
-    return results.map(result => ({
-      item: result.item,
+    const results = this.miniSearch.search(query, {
+      boost: { 
+        title: 3,
+        tags: 2,
+        description: 1.5,
+        content: 1
+      },
+      fuzzy: 0.2,
+      prefix: true
+    });
+
+    return results.map((result: any) => ({
+      item: result as SearchablePost,
       score: result.score,
-      matches: result.matches
+      matches: result.match ? Object.entries(result.match).map(([field, terms]) => ({
+        key: field,
+        value: terms
+      })) : []
     }));
   }
 
   searchByTag(tag: string): SearchablePost[] {
-    return this.fuse.getIndex().docs.filter(post => 
+    return this.posts.filter(post => 
       post.tags.some(t => t.toLowerCase() === tag.toLowerCase())
     );
   }
 
   getAllTags(): string[] {
     const allTags = new Set<string>();
-    this.fuse.getIndex().docs.forEach(post => {
+    this.posts.forEach(post => {
       post.tags.forEach(tag => allTags.add(tag));
     });
     return Array.from(allTags).sort();
@@ -75,10 +98,10 @@ export function createSearchablePost(
 ): SearchablePost {
   return {
     id: post.id,
-    title: post.data.title,
-    description: post.data.description,
+    title: post.data.title || post.slug, // Fallback to slug if title is missing
+    description: post.data.description || '', // Fallback to empty string
     content: content,
-    publishDate: post.data.publishDate,
+    publishDate: post.data.publishDate || new Date(), // Fallback to current date
     tags: post.data.tags || [],
     collection: post.collection,
     slug: post.slug,

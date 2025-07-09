@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import storygraphLogo from '../assets/storygraph.png';
 // Removed getCollection import as it's not used
 ---
 
@@ -10,15 +11,15 @@ import Layout from '../layouts/Layout.astro';
     <div class="about-content">
       <div class="bio-section">
         <p>
-          I'm a software engineer currently focused on machine learning and embedded systems.
+          I'm a recent Computer Science graduate currently working as a software engineer. I'm currently focused on machine learning and embedded systems.
           This blog is where I share my thoughts and insights in my learning journey in software engineering,
           particularly in areas of performance optimization, GPU computing and systems programming.
         </p>
 
         <p>
-          This is also where I share writings on my readings in fiction, marxist feminism and philosophy. 
+          This is also where I share my writings on my readings in literature, marxist feminism and philosophy. 
         </p>
-        <p>
+        <!-- <p>
           My work primarily involves:
         </p>
 
@@ -27,7 +28,7 @@ import Layout from '../layouts/Layout.astro';
           <li><span class="skill-highlight">Systems programming</span></li>
           <li><span class="skill-highlight">GPU computing</span></li>
           <li><span class="skill-highlight">Machine learning infrastructure</span></li>
-        </ul>
+        </ul> -->
       </div>
       
     
@@ -56,6 +57,11 @@ import Layout from '../layouts/Layout.astro';
               <rect x="16" y="8" width="6" height="8" rx="1" ry="1"></rect>
             </svg>
             <span>Letterboxd</span>
+          </a>
+
+          <a href="https://app.thestorygraph.com/profile/meillaya" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Storygraph">
+            <img src={storygraphLogo.src} alt="Storygraph logo" width="24" height="24" />
+            <span>Storygraph</span>
           </a>
           
           <a href="https://literal.club/buried" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Goodreads">
@@ -204,6 +210,15 @@ import Layout from '../layouts/Layout.astro';
   }
   .social-link:hover svg {
     color: var(--color-primary-dark, #5a1fa8); /* Darker SVG on hover */
+  }
+
+  .social-link img {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: 4px;
+  }
+  .social-link:hover img {
+    opacity: 0.8;
+    transform: scale(1.1);
   }
 
   @media (max-width: 768px) {
