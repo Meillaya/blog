@@ -1,31 +1,29 @@
 ---
 import { BurgerMenu } from './BurgerMenu';
-import type { SearchablePost } from '../utils/search';
 
 interface Props {
-    posts: SearchablePost[];
+    posts: Array<{ title: string; collection: string; slug: string }>;
     tags: string[];
 }
 
-const { posts, tags } = Astro.props;
+const { posts: _posts, tags: _tags } = Astro.props as Props;
 ---
 <header>
     <nav class="main-nav">
       <a href="/" class="site-title">meillaya</a>
-      
+
       <div class="nav-content">
         <div class="nav-links">
           <a href="/essays">ESSAYS</a>
-          <a href="/notes">NOTES</a>
-          <a href="/archive">ARCHIVE</a>
-          <a href="/about">ABOUT</a>
+          <a href="/projects">PROJECTS</a>
+          <a href="/technical-writings">TECHNICAL WRITINGS</a>
         </div>
-        
+
         <div class="burger-menu-container">
-          <BurgerMenu 
-            client:load 
-            posts={posts} 
-            tags={tags} 
+          <BurgerMenu
+            client:load
+            posts={_posts}
+            tags={_tags}
           />
         </div>
       </div>
@@ -63,17 +61,17 @@ const { posts, tags } = Astro.props;
     .nav-content {
         display: flex;
         align-items: center;
-        gap: 1.5rem; /* Adjust gap for nav-content */
+        gap: 2rem;
     }
 
     .nav-links {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 1rem; /* Closer spacing for nav links */
+        gap: 2rem;
         flex-wrap: nowrap;
     }
-    
+
     .nav-links a {
         text-decoration: none;
         color: var(--text-color);
@@ -119,14 +117,4 @@ const { posts, tags } = Astro.props;
         gap: 0;
       }
     }
-
-    @media (min-width: 769px) {
-      .burger-menu-container {
-        /* Ensure it's not hidden on desktop */
-        display: flex; /* Explicitly ensure it's flex */
-      }
-      .nav-content {
-        gap: 1.5rem; /* Ensure proper spacing with burger menu on desktop */
-      }
-    }
-</style> 
+</style>

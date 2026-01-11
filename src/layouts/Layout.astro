@@ -6,21 +6,20 @@ interface Props {
 import type { CollectionEntry } from 'astro:content';
 import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
-import { createSearchablePost } from '../utils/search';
 import '../styles/base.css';
 import NavBar from '../components/NavBar.astro';
 
 
 const { title, description = "A technical blog about software engineering and performance optimization" } = Astro.props;
 
-// Get data for the burger menu
+// Get data for burger menu
 const blogPosts = await getCollection('blog');
-const essaysPosts = await getCollection('essays'); 
-const notesPosts = await getCollection('notes');
+const essaysPosts = await getCollection('essays');
+const projectsPosts = await getCollection('projects');
 
 // Create searchable posts
-const allPosts: (CollectionEntry<'blog'> | CollectionEntry<'essays'> | CollectionEntry<'notes'>)[] = [...blogPosts, ...essaysPosts, ...notesPosts];
-const searchablePosts = allPosts.map(post => createSearchablePost(post));
+const allPosts: (CollectionEntry<'blog'> | CollectionEntry<'essays'> | CollectionEntry<'projects'>)[] = [...blogPosts, ...essaysPosts, ...projectsPosts];
+const searchablePosts = allPosts.map(post => ({ title: post.data.title, collection: post.collection, slug: post.slug }));
 
 // Get all tags
 const allTags = new Set<string>();
@@ -45,11 +44,11 @@ const tagsArray = Array.from(allTags).sort();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    
+
     <!-- Vercel Analytics -->
     <script is:inline>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-      
+
       // Simple page view tracking
       if (typeof window !== 'undefined') {
         window.va('pageview');
@@ -70,7 +69,7 @@ const tagsArray = Array.from(allTags).sort();
     --max-width: 1000px;
     --font-size-base: 20px;
   }
-  
+
   * {
     box-sizing: border-box;
     margin: 0;
@@ -93,13 +92,12 @@ const tagsArray = Array.from(allTags).sort();
   }
 
   /* Enable text selection for specific elements */
-  .search-input, 
-  .article-content, 
+  .article-content,
   .mdx-content,
   article,
-  pre, 
-  code, 
-  p, 
+  pre,
+  code,
+  p,
   h1, h2, h3, h4, h5, h6,
   li,
   blockquote,
@@ -154,46 +152,5 @@ const tagsArray = Array.from(allTags).sort();
   img {
     max-width: 100%;
     height: auto;
-  }
-
-  /* Search Component Styles */
-  .search-container {
-    position: relative;
-    width: 100%;
-  }
-
-  .search-form {
-    margin-bottom: 0;
-  }
-
-  .search-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background: white;
-    border: 1px solid #e1e5e9;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    overflow: hidden;
-  }
-
-  .search-input-wrapper:focus-within {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
-  }
-
-  .search-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 0.9rem;
-    padding: 0.75rem 1rem;
-    background: transparent;
-    color: var(--color-text);
-    font-family: inherit;
-  }
-
-  .search-input::placeholder {
-    color: #999;
   }
 </style>

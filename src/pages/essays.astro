@@ -20,23 +20,19 @@ essaysPosts.sort((a, b) => new globalThis.Date(b.data.publishDate).getTime() - n
                 - Deleuze, <i>Negotiations 1972-1990</i>
             </p>
         </header>
-        
+
         <ul class="essays-list">
             {essaysPosts.map((post) => (
-            <li class="essays-item">
-                <a href={`/essays/${post.slug}`} class="essays-link">
-                    <div class="essays-content">
-                        <h2 class="essays-title">{post.data.title}</h2>
-                        <time class="essays-date" datetime={post.data.publishDate.toISOString()}>
-                            {new globalThis.Date(post.data.publishDate).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            })}
-                        </time>
-                        <p class="essays-description">{post.data.description}</p>
-                        <span class="read-more">Continue reading <span class="arrow">→</span></span>
-                    </div>
+            <li class="essay-item">
+                <a href={`/essays/${post.slug}`} class="essay-link">
+                    <time class="essay-date" datetime={post.data.publishDate.toISOString()}>
+                        {new globalThis.Date(post.data.publishDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}
+                    </time>
+                    <span class="essay-title">{post.data.title}</span>
                 </a>
             </li>
             ))}
@@ -46,7 +42,7 @@ essaysPosts.sort((a, b) => new globalThis.Date(b.data.publishDate).getTime() - n
 
 <style>
     .container {
-        max-width: 1200px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 0 1.5rem;
     }
@@ -89,107 +85,68 @@ essaysPosts.sort((a, b) => new globalThis.Date(b.data.publishDate).getTime() - n
         list-style: none;
         padding: 0;
         margin: 0;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 2rem;
     }
 
-    .essays-item {
-        position: relative;
-        transition: transform 0.3s ease;
+    .essay-item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 1.5rem 0;
     }
-    
-    .essays-link {
+
+    .essay-item:last-child {
+        border-bottom: none;
+    }
+
+    .essay-link {
         display: flex;
+        align-items: center;
+        gap: 1.5rem;
         text-decoration: none;
         color: inherit;
-        border-radius: 16px;
-        overflow: hidden;
-        background: var(--color-card-bg, #FFF1E7);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        height: 100%;
+        transition: all 0.2s ease;
     }
 
-    .essays-link:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    .essay-link:hover {
+        transform: translateX(5px);
     }
 
-    .essays-content {
-        flex: 1;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        z-index: 2;
-    }
-
-    .essays-title {
-        margin: 0 0 0.75rem;
-        font-size: 1.6rem;
-        color: var(--color-heading, #333);
-        font-weight: 700;
-        line-height: 1.3;
-        transition: color 0.3s ease;
-    }
-
-    .essays-link:hover .essays-title {
+    .essay-link:hover .essay-title {
         color: var(--color-primary);
     }
 
-    .essays-date {
+    .essay-date {
         font-size: 0.9rem;
         color: var(--color-text-light, #666);
-        margin-bottom: 1.25rem;
-        display: block;
         font-weight: 500;
+        white-space: nowrap;
+        min-width: 140px;
     }
 
-    .essays-description {
-        margin: 0 0 1.75rem;
-        line-height: 1.7;
-        color: var(--color-text, #444);
-        flex-grow: 1;
-        font-size: 1.05rem;
-    }
-
-    .read-more {
-        font-size: 1rem;
+    .essay-title {
+        font-size: 1.25rem;
+        color: var(--color-heading, #333);
         font-weight: 600;
-        color: var(--color-primary);
-        display: inline-flex;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-    .arrow {
-        display: inline-block;
-        margin-left: 0.25rem;
-        transition: transform 0.3s ease;
-    }
-
-    .essays-link:hover .read-more .arrow {
-        transform: translateX(6px);
-    }
-
-    @media (min-width: 768px) {
-        .essays-list {
-            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
-        }
+        line-height: 1.4;
+        transition: color 0.2s ease;
     }
 
     @media (max-width: 767px) {
         .page-title {
             font-size: 2rem;
         }
-        
-        .essays-link {
+
+        .essay-link {
             flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
         }
-        
-        .essays-content {
-            padding: 1.5rem;
+
+        .essay-date {
+            min-width: auto;
+            font-size: 0.85rem;
+        }
+
+        .essay-title {
+            font-size: 1.1rem;
         }
     }
 </style>

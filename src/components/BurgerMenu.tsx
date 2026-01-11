@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import type { SearchablePost } from '../utils/search';
 
 interface BurgerMenuProps {
-  posts: SearchablePost[];
+  posts: any[];
   tags: string[];
 }
 
-export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
+export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts: _posts, tags: _tags }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -94,49 +93,15 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ posts, tags }) => {
         </div>
 
         <div className="burger-content">
-          {/* Quick Actions */}
-          <div className="menu-section">
-            <h3>QUICK ACTIONS</h3>
-            <a 
-              href="/search"
-              className="menu-item"
-              onClick={handleLinkClick}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="m21 21-4.35-4.35"/>
-              </svg>
-              <span>Search</span>
-              <span className="arrow">→</span>
-            </a>
-            
-            <a 
-              href="/tags"
-              className="menu-item"
-              onClick={handleLinkClick}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-                <line x1="7" y1="7" x2="7.01" y2="7"/>
-              </svg>
-              <span>Browse Tags</span>
-              <span className="arrow">→</span>
-            </a>
-          </div>
-
           {/* Navigation Links */}
           <div className="menu-section">
             <h3>NAVIGATION</h3>
             <div className="nav-links">
               <a href="/essays" onClick={handleLinkClick}>Essays</a>
-              <a href="/notes" onClick={handleLinkClick}>Notes</a>
-              <a href="/archive" onClick={handleLinkClick}>Archive</a>
-              <a href="/about" onClick={handleLinkClick}>About</a>
+              <a href="/projects" onClick={handleLinkClick}>Projects</a>
+              <a href="/technical-writings" onClick={handleLinkClick}>Technical Writings</a>
             </div>
           </div>
-
-          {/* Stats */}
-          {/* REMOVED: Stats section */}
         </div>
       </div>
 
