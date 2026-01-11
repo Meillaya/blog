@@ -1,0 +1,145 @@
+---
+// src/pages/technical-writings.astro
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allBlogPosts = await getCollection('blog');
+const sortedBlogPosts = allBlogPosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<Layout title="Technical Writings" description="Archive of all my technical writings">
+  <div class="container">
+    <header class="page-header">
+      <h1 class="page-title">Technical Writings</h1>
+      <p class="page-description">Collection of my technical articles and posts</p>
+    </header>
+
+    <div class="technical-writings-list">
+      {sortedBlogPosts.map((post) => (
+        <article class="technical-writing-item">
+          <a href={`/blog/${post.slug}`} class="technical-writing-link">
+            <time class="technical-writing-date" datetime={post.data.publishDate.toISOString()}>
+              {post.data.publishDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+            <span class="technical-writing-title">{post.data.title}</span>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  .page-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: 3px;
+  }
+
+  .page-title {
+    margin-bottom: 0.5rem;
+    font-size: 2.75rem;
+    color: var(--color-heading, #333);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .page-description {
+    font-size: 1.2rem;
+    color: var(--color-text-light, #666);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .technical-writings-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4rem;
+  }
+
+  .technical-writing-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 0;
+  }
+
+  .technical-writing-item:last-child {
+    border-bottom: none;
+  }
+
+  .technical-writing-link {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .technical-writing-link:hover {
+    transform: translateX(5px);
+  }
+
+  .technical-writing-link:hover .technical-writing-title {
+    color: var(--color-primary);
+  }
+
+  .technical-writing-date {
+    font-size: 0.9rem;
+    color: var(--color-text-light, #666);
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 140px;
+  }
+
+  .technical-writing-title {
+    font-size: 1.25rem;
+    color: var(--color-heading, #333);
+    font-weight: 600;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  @media (max-width: 767px) {
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .technical-writing-link {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    .technical-writing-date {
+      min-width: auto;
+      font-size: 0.85rem;
+    }
+
+    .technical-writing-title {
+      font-size: 1.1rem;
+    }
+  }
+</style>

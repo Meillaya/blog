@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const projectsPosts = await getCollection('projects');
+
+projectsPosts.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+---
+
+<Layout title="Projects">
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">Projects</h1>
+            <p class="page-description">
+                A collection of my work and ongoing projects.
+            </p>
+        </header>
+
+        <ul class="projects-list">
+            {projectsPosts.map((post) => (
+            <li class="project-item">
+                <a href={`/projects/${post.slug}`} class="project-link">
+                    <time class="project-date" datetime={post.data.publishDate.toISOString()}>
+                        {new Date(post.data.publishDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}
+                    </time>
+                    <span class="project-title">{post.data.title}</span>
+                </a>
+            </li>
+            ))}
+        </ul>
+    </div>
+</Layout>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    .page-header {
+        margin-bottom: 3rem;
+        text-align: center;
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+
+    .page-header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--color-primary);
+        border-radius: 3px;
+    }
+
+    .page-title {
+        margin-bottom: 0.5rem;
+        font-size: 2.75rem;
+        color: var(--color-heading, #333);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .page-description {
+        font-size: 1.2rem;
+        color: var(--color-text-light, #666);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .projects-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .project-item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 1.5rem 0;
+    }
+
+    .project-item:last-child {
+        border-bottom: none;
+    }
+
+    .project-link {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s ease;
+    }
+
+    .project-link:hover {
+        transform: translateX(5px);
+    }
+
+    .project-link:hover .project-title {
+        color: var(--color-primary);
+    }
+
+    .project-date {
+        font-size: 0.9rem;
+        color: var(--color-text-light, #666);
+        font-weight: 500;
+        white-space: nowrap;
+        min-width: 140px;
+    }
+
+    .project-title {
+        font-size: 1.25rem;
+        color: var(--color-heading, #333);
+        font-weight: 600;
+        line-height: 1.4;
+        transition: color 0.2s ease;
+    }
+
+    @media (max-width: 767px) {
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .project-link {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+
+        .project-date {
+            min-width: auto;
+            font-size: 0.85rem;
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+        }
+    }
+</style>
